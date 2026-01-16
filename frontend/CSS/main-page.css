@@ -1,0 +1,82 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-image: url("../images/Agro bg.avif");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    color: #fff;
+    font-family: 'Poppins', sans-serif;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+}
+body::before {
+    content: "";
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background-color: rgba(31,77,43,0.6);
+    z-index: -1; 
+}
+
+nav{
+    display: flex;
+    justify-content: space-around;
+    font-size: 1.3rem;
+    padding: 2rem;
+}
+.nav-lists{
+    display: flex;
+    justify-content: space-around;
+    list-style: none;
+    gap: 50px;
+}
+button{
+    background: #FF9600;
+    border-radius: 0.5rem;
+    outline: none;
+    border: none;
+    padding: 0.3rem 2rem;
+}
+button a{
+    color: #fff;
+    text-decoration: none;
+    font-size: 1rem;
+    font-family: 'Poppins', sans-serif;
+}
+.hero h1{
+    text-align: center;
+    padding: 2rem 8rem;
+}
+.hero-buttons{
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 10px;
+    margin-left: 30px;
+}
+.farmer-button{
+    padding: 0.3rem 2rem;
+}
+@media (max-width:768px) {
+    .nav-lists{
+        display: none;
+    }
+    .logo{
+        font-size: 1.8rem;
+    }
+    .hero-section h1{
+    text-align: center;
+    padding: 2rem;
+}
+.hero-buttons{
+    margin: 30px auto 0;
+}
+button{
+    padding: 0.3rem 0.5rem;
+}
+}

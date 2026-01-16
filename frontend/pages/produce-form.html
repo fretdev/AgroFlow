@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enter Produce</title>
+    <link rel="stylesheet" href="../CSS/produce-form.css">
+</head>
+<body>
+    <div class="form-card-container">
+        <div class="produce-form">
+            <h1>ADD PRODUCE</h1>
+            <form action="" onsubmit="addJobs(event)">
+
+                <label for="farmerName" >Name:</label>
+                <input type="text" placeholder="Name"id="farmer-name">
+
+                <label for="produce">Produce:</label>
+                <input type="text" id="produce" placeholder="Enter Crop">
+
+                <label for="quantity">Quantity:</label>
+                <input type="number" id="quantity" placeholder="Enter quantity">
+
+                <label for="pickup-location">Pickup-location:</label>
+                <input type="text" id="pickup-location" placeholder="Enter Pickup-location">
+
+                <label for="destination">Destination</label>
+                <input type="text" id="destination" placeholder="Enter Destination">
+
+                <label for="price-offer">Price</label>
+                <input type="number" id="price-offer" placeholder="Enter Price-offer">
+
+                <button type="submit" class="form-button">Submit</button>
+            </form>
+        </div>
+
+        <div id="job-board">
+            
+        </div>
+    </div>
+    <script src="../javavascript-logic/index.js"></script>
+</body>
+</html>
+
+ <!-- const farmerName = document.getElementById('farmer-name').value
+    const produce = document.getElementById('produce').value
+    const quantity = Number(document.getElementById('quantity').value)
+    const pickupLocation = document.getElementById('pickup-location').value
+    const destination = document.getElementById('destination').value
+    const priceOffer = Number(document.getElementById('price-offer').value) -->
