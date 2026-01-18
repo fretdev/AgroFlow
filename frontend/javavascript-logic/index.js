@@ -1,4 +1,4 @@
-let availableJobs = []
+const availableJobs = JSON.parse(localStorage.getItem("agro_market_data")) || []
 const locations = ["Lagos", "Ibadan", "Kano", "Port Harcourt", "Abuja"]
 
 // Objects schema
@@ -10,14 +10,14 @@ const locations = ["Lagos", "Ibadan", "Kano", "Port Harcourt", "Abuja"]
 const addJobs = (event)=>{
     event.preventDefault()
 
-    const farmerName = document.getElementById('farmer-name').value
-    const produce = document.getElementById('produce').value
+    const farmerName = document.getElementById('farmer-name').value.trim()
+    const produce = document.getElementById('produce').value.trim()
     const quantity = Number(document.getElementById('quantity').value)
     const pickupLocation = document.getElementById('pickup-location').value
     const destination = document.getElementById('destination').value
     const priceOffer = Number(document.getElementById('price-offer').value)
 
-    if(!farmerName || !produce || !quantity){
+    if(!farmerName || !produce || quantity <=0){
         alert("Please provide valid harvest details")
         return
     }
@@ -27,18 +27,20 @@ const addJobs = (event)=>{
         id: Date.now(),
         farmerName,
         produce,
-        quantity: Number(quantity),
+        quantity,
         pickupLocation,
         destination,
-        priceOffer: Number(priceOffer),
+        priceOffer,
         harvestTime:new Date(),
         status: "Available",
     }
 
     availableJobs.push(newJob)
+
+    localStorage.setItem("agro_market_data",JSON.stringify(availableJobs))
+    
     event.target.reset()
-    console.log(availableJobs)
-    console.log(newJob)
+    
     renderJobs()
 }
 
@@ -47,13 +49,14 @@ const renderJobs = ()=>{
     jobBoard.innerHTML = ""
 
     if(availableJobs.length === 0){
-        jobBoard.innerHTML = "No harvests available yet. Be the first to post!"
+        jobBoard.textContent = "No harvests available yet. Be the first to post!"
+        return
     }
 
     for(const {farmerName,produce,quantity,pickupLocation,destination,priceOffer} of availableJobs){
         const jobContainer = document.createElement('div')
         jobContainer.innerHTML = `
-            <h1>${farmerName}</h1>
+            <h2>${farmerName}</h2>
             <p>${produce}</p>
             <p>${quantity}</p>
             <p>${pickupLocation}</p>
@@ -63,4 +66,4 @@ const renderJobs = ()=>{
         jobBoard.appendChild(jobContainer)
     }
 }
-
+renderJobs()
