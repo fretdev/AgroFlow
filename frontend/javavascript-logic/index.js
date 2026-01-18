@@ -53,7 +53,7 @@ const renderJobs = ()=>{
         return
     }
 
-    for(const {farmerName,produce,quantity,pickupLocation,destination,priceOffer} of availableJobs){
+    for(const {id,farmerName,produce,quantity,pickupLocation,destination,priceOffer,status} of availableJobs){
         const jobContainer = document.createElement('div')
         jobContainer.innerHTML = `
             <h2>${farmerName}</h2>
@@ -62,8 +62,22 @@ const renderJobs = ()=>{
             <p>${pickupLocation}</p>
             <p>${destination}</p>
             <p>${priceOffer}</p>
+            <button class="claim-btn" data-id="${id}" onclick="claimJob(${id})" ${status === "Claimed" ? "disabled" : ""}>${status === "Claimed" ? "Claimed" : "Claim Job"}</button>
         `
         jobBoard.appendChild(jobContainer)
     }
 }
+
+const claimJob = (jobId)=>{
+     const jobIndex = availableJobs.findIndex(job =>job.id === jobId)
+
+     if (jobIndex === -1 || availableJobs[jobIndex].status === "Claimed"){
+        return
+     }
+
+     availableJobs[jobIndex].status = "Claimed"
+     localStorage.setItem("agro_market_data",JSON.stringify(availableJobs))
+     renderJobs()
+}
 renderJobs()
+
