@@ -1,4 +1,4 @@
-const availableJobs = JSON.parse(localStorage.getItem("agro_market_data")) || []
+let availableJobs = JSON.parse(localStorage.getItem("agro_market_data")) || []
 const locations = ["Lagos", "Ibadan", "Kano", "Port Harcourt", "Abuja"]
 
 // Objects schema
@@ -46,6 +46,8 @@ const addJobs = (event)=>{
 
 const renderJobs = ()=>{
     const jobBoard = document.getElementById('job-board')
+    const isFarmerPage = window.location.pathname.includes("produce-form")
+    if(!jobBoard) return
     jobBoard.innerHTML = ""
 
     if(availableJobs.length === 0){
@@ -55,14 +57,25 @@ const renderJobs = ()=>{
 
     for(const {id,farmerName,produce,quantity,pickupLocation,destination,priceOffer,status} of availableJobs){
         const jobContainer = document.createElement('div')
+        let buttonHtml
+        if(isFarmerPage){
+            buttonHtml = `
+        <p><strong>Status:</strong> ${status}</p>
+        <button onclick="deleteJob(${id})">Delete Harvest</button>
+    `
+        }
+        else{
+            buttonHtml = `<button class="claim-btn" data-id="${id}" onclick="claimJob(${id})" ${status === "Claimed" ? "disabled" : ""}>${status === "Claimed" ? "Claimed" : "Claim Job"}</button>`
+        }
+
         jobContainer.innerHTML = `
             <h2>${farmerName}</h2>
             <p>${produce}</p>
-            <p>${quantity}</p>
+            <p>${quantity}KG</p>
             <p>${pickupLocation}</p>
             <p>${destination}</p>
-            <p>${priceOffer}</p>
-            <button class="claim-btn" data-id="${id}" onclick="claimJob(${id})" ${status === "Claimed" ? "disabled" : ""}>${status === "Claimed" ? "Claimed" : "Claim Job"}</button>
+            <p>₦${priceOffer.toLocaleString()}</p>
+            ${buttonHtml}
         `
         jobBoard.appendChild(jobContainer)
     }
@@ -78,6 +91,19 @@ const claimJob = (jobId)=>{
      availableJobs[jobIndex].status = "Claimed"
      localStorage.setItem("agro_market_data",JSON.stringify(availableJobs))
      renderJobs()
+}
+
+const deleteJob = (id) =>{
+    const targetJob = availableJobs.find(job => job.id === id)
+    if(targetJob && targetJob.status === "Claimed"){
+        alert("You Can't delete this job it is already claimed")
+        return
+    }
+    else{
+        availableJobs= availableJobs.filter(job=>job.id != id)
+        localStorage.setItem("agro_market_data",JSON.stringify(availableJobs))
+        renderJobs()
+    }
 }
 renderJobs()
 

@@ -1,47 +1,48 @@
-# 🌾 AgroFlow
+🌾 AgroFlow
+A localized marketplace platform designed to bridge the gap between rural farmers and logistics transporters in Nigeria. This application allows farmers to list their harvests and enables transporters to claim delivery jobs in real-time.
 
-### _Empowering Farmers, Streamlining Logistics_
+🚀 Key Features
+👨‍🌾 Farmer Dashboard
+Produce Listing: Farmers can post details about their harvest, including produce type, quantity (KG), and pickup/destination locations.
 
-**AgroFlow** is a dual-sided marketplace designed to solve the "last-mile" delivery challenge for agricultural produce in Nigeria. This platform connects farmers directly with transporters, reducing post-harvest waste by ensuring crops move from farm to market in record time.
+Dynamic Pricing: Includes automatic currency formatting in Naira (₦) for price offers.
 
----
+Harvest Management: Farmers can view the status of their posts and delete listings that are no longer needed.
 
-## 🏗️ Project Architecture
+Delete Protection: A built-in security rule prevents farmers from deleting a job once it has been "Claimed" by a transporter.
 
-The project is currently structured as a **Multi-Page Application (MPA)** to provide distinct, focused experiences for different user roles:
+🚛 Transporter Marketplace
+Job Board: A real-time view of all available agricultural hauls across the country.
 
-- **Farmer Portal:** A dedicated space for farmers to manage their profiles and access the harvest posting tools.
-- **Produce Form:** The "Engine" where farmers list harvest data, specify quantities, and set price offers.
-- **Transporter Dashboard:** A real-time market feed where drivers can view, filter, and claim available delivery jobs.
-- **Main Landing Page:** The central entry point for all users to the AgroFlow ecosystem.
+Job Claiming: Transporters can claim available jobs, which updates the status across the entire system.
 
-## 📂 Codebase Structure
+Smart UI: Buttons are automatically disabled once a job is claimed to prevent double-booking.
 
-```text
-/AgroFlow
-  └── /frontend
-      ├── /CSS                 # Modular stylesheets (Flexbox & Grid)
-      ├── /pages               # HTML Views
-      │   ├── farmer.html      # Farmer profile entry
-      │   ├── produce-form.html# Data entry for new harvests
-      │   ├── transporter.html # The "Marketplace" board for drivers
-      │   └── main-page.html   # Homepage
-      └── /javascript-logic    # The "Brain" (State management & UI Rendering)
-🛠️ Technical Accomplishments (Phase 1)
-Modular File System: Organized code into a clean frontend/ directory to separate concerns.
+🛠️ Technical Implementation
+Persistent Storage: Uses localStorage to sync data between the Farmer and Transporter pages without a backend database.
 
-Functional Data Pipeline: Engineered a JavaScript engine that captures harvest data as structured objects.
+Conditional Rendering: A single JavaScript engine detects the user's page (window.location.pathname) to show relevant actions (Delete for Farmers vs. Claim for Transporters).
 
-Dynamic UI Rendering: Implemented logic to auto-generate "Job Cards" based on farmer input.
+Data Validation: Implements advanced array methods like .filter(), .find(), and .findIndex() for robust data manipulation and state management.
 
-Version Control: Established a professional Git workflow and GitHub repository.
+📊 Data Schema
+The application uses a structured object model for every listing:
 
-📅 The Road Ahead (Phase 2)
-[ ] Data Persistence: Implement localStorage to sync data between the Produce Form and Transporter Board.
+id: Unique timestamp for identification.
 
-[ ] Logistics UI: Elevate the marketplace from basic text to high-contrast, professional "Job Cards."
+farmerName: Name of the posting farmer.
 
-[ ] Interactive States: Add "Claim Job" functionality to update job status in real-time.
+produce: Type of agricultural product.
 
-Developed by fretdev
-```
+quantity: Weight in Kilograms (KG).
+
+priceOffer: Formatted currency value in ₦.
+
+status: Tracking for "Available" or "Claimed" states.
+
+🏗️ How to Run
+Clone the repository.
+
+Open index.html to navigate to the Farmer or Transporter sections.
+
+No installation required (Pure Vanilla JavaScript).
