@@ -7,6 +7,17 @@
 </head>
 <body>
     <h1>Transporter Dashboard</h1>
+    <div class="filter-container">
+        <label for="location-filter">Filter by Pickup Location</label>
+        <select name="" id="location-filter" onchange="filterJobs()">
+            <option value="All">All Locations</option>
+            <option value="Lagos">Lagos</option>
+            <option value="Ogun">Ogun</option>
+            <option value="Osun">Osun</option>
+            <option value="Ibadan">Ibadan</option>
+            <option value="Abuja">Abuja</option>
+        </select>
+    </div>
     <div id="job-board">
             
         </div>

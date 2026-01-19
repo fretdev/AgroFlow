@@ -1,5 +1,5 @@
 let availableJobs = JSON.parse(localStorage.getItem("agro_market_data")) || []
-const locations = ["Lagos", "Ibadan", "Kano", "Port Harcourt", "Abuja"]
+const locations = ["Lagos", "Ibadan", "Ogun", "Osun", "Abuja"]
 
 // Objects schema
 // id,farmerName,produce,quantity,pickupLocation,destination,priceOffer,harvestTime,status
@@ -13,7 +13,7 @@ const addJobs = (event)=>{
     const farmerName = document.getElementById('farmer-name').value.trim()
     const produce = document.getElementById('produce').value.trim()
     const quantity = Number(document.getElementById('quantity').value)
-    const pickupLocation = document.getElementById('pickup-location').value
+    const pickupLocation = document.getElementById('pickup-location').value.toLowerCase()
     const destination = document.getElementById('destination').value
     const priceOffer = Number(document.getElementById('price-offer').value)
 
@@ -44,19 +44,24 @@ const addJobs = (event)=>{
     renderJobs()
 }
 
-const renderJobs = ()=>{
+const renderJobs = (jobsToDisplay = availableJobs)=>{
     const jobBoard = document.getElementById('job-board')
     const isFarmerPage = window.location.pathname.includes("produce-form")
     if(!jobBoard) return
     jobBoard.innerHTML = ""
 
-    if(availableJobs.length === 0){
+    if(jobsToDisplay.length === 0){
         jobBoard.textContent = "No harvests available yet. Be the first to post!"
         return
     }
 
-    for(const {id,farmerName,produce,quantity,pickupLocation,destination,priceOffer,status} of availableJobs){
+    for(const {id,farmerName,produce,quantity,pickupLocation,destination,priceOffer,status} of jobsToDisplay){
         const jobContainer = document.createElement('div')
+        jobContainer.classList.add('job-card')
+        if(status === "Claimed"){
+            jobContainer.classList.add('status-claimed')
+        }
+
         let buttonHtml
         if(isFarmerPage){
             buttonHtml = `
@@ -69,12 +74,12 @@ const renderJobs = ()=>{
         }
 
         jobContainer.innerHTML = `
-            <h2>${farmerName}</h2>
-            <p>${produce}</p>
-            <p>${quantity}KG</p>
-            <p>${pickupLocation}</p>
-            <p>${destination}</p>
-            <p>₦${priceOffer.toLocaleString()}</p>
+            <h2>${farmerName.charAt(0).toUpperCase()+farmerName.slice(1)}</h2>
+            <p><strong>PRODUCE:</strong> ${produce.charAt(0).toUpperCase()+produce.slice(1)}</p>
+            <p><strong>QUANTITY:</strong> ${quantity}KG</p>
+            <p><strong>PICKUP:</strong> ${pickupLocation.charAt(0).toUpperCase()+pickupLocation.slice(1)}</p>
+            <p><strong>DESTINATION:</strong> ${destination.charAt(0).toUpperCase()+destination.slice(1)}</p>
+            <p><strong>PRICE:</strong> ₦${priceOffer.toLocaleString()}</p>
             ${buttonHtml}
         `
         jobBoard.appendChild(jobContainer)
@@ -104,6 +109,18 @@ const deleteJob = (id) =>{
         localStorage.setItem("agro_market_data",JSON.stringify(availableJobs))
         renderJobs()
     }
+}
+const filterJobs = () =>{
+    const selectedLocation = document.getElementById("location-filter").value.toLowerCase()
+    
+    if(selectedLocation === "all"){
+        renderJobs()
+    }
+    else{
+        const filteredJob = availableJobs.filter(job => job.pickupLocation.toLowerCase() === selectedLocation)
+        renderJobs(filteredJob)
+    }
+
 }
 renderJobs()
 
