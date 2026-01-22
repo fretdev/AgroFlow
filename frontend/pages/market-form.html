@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marketer Form</title>
+    <link rel="stylesheet" href="../CSS/market-form.css">
+</head>
+<body>
+    <h1>Request Produce</h1>
+    <div class="form-card-container">
+        <div class="produce-form">
+            <form action="" id="marketer-form" onsubmit="saveMarketerRequest(event)">
+                <label for="marketer-name">Name:</label>
+                <input type="text" id="marketer-name" placeholder="Enter Name" required>
+                <label for="marketer-produce">Select Produce:</label>
+                <select name="" id="marketer-produce" required>
+                    <option value="" disabled selected>Select an option</option>
+                    <option value="yam">Yam</option>
+                    <option value="pepper">Pepper</option>
+                    <option value="beans">Beans</option>
+                    <option value="tomatoes">Tomatoes</option>
+                    <option value="rice">Rice</option>
+                </select>
+
+                <label for="marketer-quantity">Quantity:</label>
+                <input type="number" placeholder="Enter quantity(KG)" id="marketer-quantity" required>
+                <label for="marketer-budget">Budget:</label>
+                <input type="number" placeholder="Enter Budget" id="marketer-budget" required>
+                <label for="marketer-location">Delivery Location:</label>
+                <input type="text" placeholder="Enter Location" id="marketer-location" required>
+                <label for="pickup-region">Pick-up Region:</label>
+                <input type="text" placeholder="Enter Region" id="pickup-region" required>
+                <button type="submit" class="form-button">Post Market Request</button>
+           </form>
+        </div>
+    </div>
+    <script src="../javavascript-logic/market-form.js"></script>
+</body>
+</html>

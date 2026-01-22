@@ -13,23 +13,25 @@
             <form action="" onsubmit="addJobs(event)">
 
                 <label for="farmerName" >Name:</label>
-                <input type="text" placeholder="Name"id="farmer-name">
+                <input type="text" placeholder="Name"id="farmer-name" required>
 
                 <label for="produce">Produce:</label>
-                <input type="text" id="produce" placeholder="Enter Crop">
+                <input type="text" id="produce" placeholder="Enter Crop" required>
 
                 <label for="quantity">Quantity:</label>
-                <input type="number" id="quantity" placeholder="Enter quantity(KG)">
+                <input type="number" id="quantity" placeholder="Enter quantity(KG)" required>
 
                 <label for="pickup-location">Pickup-location:</label>
-                <input type="text" id="pickup-location" placeholder="Enter Pickup-location">
+                <input type="text" id="pickup-location" placeholder="Enter Pickup-location" required>
 
                 <label for="destination">Destination</label>
-                <input type="text" id="destination" placeholder="Enter Destination">
+                <input type="text" id="destination" placeholder="Enter Destination" required>
 
                 <label for="price-offer">Price</label>
-                <input type="number" id="price-offer" placeholder="Enter Price-offer(₦)">
+                <input type="number" id="price-offer" placeholder="Enter Price-offer(₦)" required>
 
+                <label for="phone-number">Phone-number</label>
+                <input type="number" id="phone-number" placeholder="Enter your phone-number" required>
                 <button type="submit" class="form-button">Submit</button>
             </form>
         </div>

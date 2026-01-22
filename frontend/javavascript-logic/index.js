@@ -16,6 +16,7 @@ const addJobs = (event)=>{
     const pickupLocation = document.getElementById('pickup-location').value.toLowerCase()
     const destination = document.getElementById('destination').value
     const priceOffer = Number(document.getElementById('price-offer').value)
+    const phoneNumber = document.getElementById('phone-number').value.trim()
 
     if(!farmerName || !produce || quantity <=0){
         alert("Please provide valid harvest details")
@@ -25,6 +26,7 @@ const addJobs = (event)=>{
 
     const newJob = {
         id: Date.now(),
+        role: "Farmer",
         farmerName,
         produce,
         quantity,
@@ -33,6 +35,7 @@ const addJobs = (event)=>{
         priceOffer,
         harvestTime:new Date(),
         status: "Available",
+        phoneNumber,
     }
 
     availableJobs.push(newJob)
@@ -50,13 +53,48 @@ const renderJobs = (jobsToDisplay = availableJobs)=>{
     if(!jobBoard) return
     jobBoard.innerHTML = ""
 
-    if(jobsToDisplay.length === 0){
+    if(availableJobs.length === 0){
         jobBoard.textContent = "No harvests available yet. Be the first to post!"
         return
     }
+    if(jobsToDisplay.length === 0){
+        jobBoard.textContent = "No results match your search. Try adjusting your filters"
+        return
+    }
 
-    for(const {id,farmerName,produce,quantity,pickupLocation,destination,priceOffer,status} of jobsToDisplay){
+
+    for(const {id,farmerName,marketerName,marketerLocation,role,marketerBudget, region,produce,quantity,pickupLocation,destination,priceOffer,status,phoneNumber} of jobsToDisplay){
         const jobContainer = document.createElement('div')
+        let displayName
+        const displayPrice = role === 'Marketer' ? marketerBudget : priceOffer
+        const roleBadge = role === 'Marketer' ? "[BUYER]" : "[FARMER]"
+        let fromLocation 
+        let toLocation
+
+        if(role === "Marketer"){
+            displayName = `${marketerName}`
+            fromLocation = region
+            toLocation = marketerLocation
+        }
+        else{
+            displayName = `${farmerName}`
+            fromLocation = pickupLocation
+            toLocation = destination
+        }
+
+
+        const foundMatch = availableJobs.some(otherJob =>
+            otherJob.role !== role && otherJob.produce === produce && (otherJob.pickupLocation === fromLocation || otherJob.region === fromLocation)
+        )
+        let matchBadgeHtml 
+        if(foundMatch){
+            matchBadgeHtml =`<span class="match-found">MAtch Found</span>`
+        }
+        else{
+            matchBadgeHtml = ""
+        }
+
+
         jobContainer.classList.add('job-card')
         if(status === "Claimed"){
             jobContainer.classList.add('status-claimed')
@@ -74,12 +112,14 @@ const renderJobs = (jobsToDisplay = availableJobs)=>{
         }
 
         jobContainer.innerHTML = `
-            <h2>${farmerName.charAt(0).toUpperCase()+farmerName.slice(1)}</h2>
+            <h2>${displayName.charAt(0).toUpperCase()+displayName.slice(1)}${roleBadge}</h2>
+            ${matchBadgeHtml}
             <p><strong>PRODUCE:</strong> ${produce.charAt(0).toUpperCase()+produce.slice(1)}</p>
             <p><strong>QUANTITY:</strong> ${quantity}KG</p>
-            <p><strong>PICKUP:</strong> ${pickupLocation.charAt(0).toUpperCase()+pickupLocation.slice(1)}</p>
-            <p><strong>DESTINATION:</strong> ${destination.charAt(0).toUpperCase()+destination.slice(1)}</p>
-            <p><strong>PRICE:</strong> ₦${priceOffer.toLocaleString()}</p>
+            <p><strong>From:</strong> ${fromLocation.charAt(0).toUpperCase()+fromLocation.slice(1)}</p>
+            <p><strong>To:</strong> ${toLocation.charAt(0).toUpperCase()+toLocation.slice(1)}</p>
+            <p><strong>PRICE:</strong> ₦${displayPrice.toLocaleString()}</p>
+            <p><strong>Contact:</strong><a href="tel:${phoneNumber}">${phoneNumber || "Not Provided"}</a></p>
             ${buttonHtml}
         `
         jobBoard.appendChild(jobContainer)
@@ -112,15 +152,26 @@ const deleteJob = (id) =>{
 }
 const filterJobs = () =>{
     const selectedLocation = document.getElementById("location-filter").value.toLowerCase()
-    
-    if(selectedLocation === "all"){
-        renderJobs()
-    }
-    else{
-        const filteredJob = availableJobs.filter(job => job.pickupLocation.toLowerCase() === selectedLocation)
-        renderJobs(filteredJob)
-    }
+    const searchInput = document.getElementById('search-input').value.toLowerCase()
 
+    const filteredJobs = availableJobs.filter(job => {
+        const locationMatch = selectedLocation === "all" || job.pickupLocation?.toLowerCase() === selectedLocation || job.region?.toLowerCase() === selectedLocation
+
+        const produceMatch = job.produce.toLowerCase().includes(searchInput)
+        
+        return locationMatch && produceMatch
+    
+    })
+    
+    renderJobs(filteredJobs)
+}
+
+const clearFilters = ()=>{
+    const selectedLocation = document.getElementById("location-filter")
+    const searchInput = document.getElementById('search-input')
+    searchInput.value = ""
+    selectedLocation.value ="all"
+    renderJobs()
 }
 renderJobs()
 
