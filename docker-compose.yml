@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  postgres-db:
+    image: postgres:17
+    container_name: agroflow_postgres_local
+    environment:
+      POSTGRES_DB: agroflow_db
+      POSTGRES_USER: agroflow_dev_user
+      POSTGRES_PASSWORD: agroflow_dev_password
+    ports:
+      - "5432:5432"
