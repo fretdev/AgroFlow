@@ -1,101 +1,91 @@
-# 🚀 AGROFLOW | THE LOGISTICS PROTOCOL
+# AgroFlow | The Logistics Protocol
+### Eliminating Post-Harvest Loss through Triangular Trade & Autonomous AI Orchestration
 
-### _Eliminating Post-Harvest Loss through Triangular Trade_
-
----
-
-## 💎 1. THE INVESTOR’S SUMMARY
-
-- **The Problem:** Nigerian farmers lose up to 40% of their perishable harvests due to a lack of immediate transport and buyer connection.
-- **The Solution:** An "Uber-style" marketplace that synchronizes Supply (Farmers), Demand (Marketers), and Logistics (Transporters) in real-time.
-- **The Revenue:** A transaction-based fee model on every delivery and premium "Rush" listings for highly perishable goods like tomatoes and peppers.
+[![Java Version](https://img.shields.io/badge/Java-21-orange.svg)](https://jdk.java.net/21/)
+[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.x-brightgreen.svg)](https://spring.io/projects/spring-boot)
+[![Database](https://img.shields.io/badge/PostgreSQL-17-blue.svg)](https://www.postgresql.org/)
+[![Architecture](https://img.shields.io/badge/Architecture-AI--Augmented%20Micro--Monolith-blueviolet.svg)]()
 
 ---
 
-## 🛠️ 2. THE DEVELOPER’S ARCHITECTURE
+## 1. Executive Summary
 
-### A. The Data Schema (Core Object)
+### The Problem
+Nigerian agricultural supply chains suffer from severe fragmentation. Smallholder farmers lose up to 40% of perishable yields (such as tomatoes and peppers) due to the absence of immediate, predictable transport linkages and structured access to off-take markets.
 
-Every entry in the system must contain:
+### The Solution
+AgroFlow is an enterprise-grade logistics protocol and marketplace engine designed to synchronize **Supply** (Farmers), **Demand** (Marketers), and **Logistics** (Transporters) in real-time. By leveraging a high-performance Java infrastructure and upcoming autonomous AI agents, AgroFlow creates a highly reliable transactional pipeline that secures produce routing before spoilage occurs.
 
-1.  **id:** `Date.now()` (Unique identifier).
-2.  **role:** `Farmer` (Supply) OR `Marketer` (Demand).
-3.  **status:** `Available`, `Matched`, `Claimed`, or `Delivered`.
-4.  **produce:** Name of the crop.
-5.  **quantity:** Numeric value in KG.
-6.  **priceOffer:** Integer value in Naira (₦).
-7.  **pickupLocation:** Origin city (Stored in lowercase).
-8.  **destination:** Target market city.
-
-### B. The Logic Flows
-
-1.  **The Match:** When a Farmer's Supply meets a Marketer's Demand, status = `Matched`.
-2.  **The Logistics:** Once `Matched`, the job appears on the Transporter’s board.
-3.  **The Bypass:** If Marketer selects "Self-Pickup," the Transporter stage is skipped.
+### Revenue Model
+The platform operates on a transaction-based fee clearing model applied to every successfully fulfilled delivery contract, paired with premium placement metrics ("Rush Listings") for highly time-sensitive, perishable payloads.
 
 ---
 
-## 🧩 3. THE "DEATH-PROOFER" (Edge Cases & Fixes)
+## 2. System Architecture & Project Layout
 
-| Event           | The Danger                    | The AgroFlow Fix                                                |
-| :-------------- | :---------------------------- | :-------------------------------------------------------------- |
-| **Partial Buy** | Buyer only wants 20/100 bags. | **The Splitter:** Logic creates a new post for the remainder.   |
-| **The No-Show** | Transporter ghosts the job.   | **Heartbeat Timer:** Job resets to "Available" after 4 hours.   |
-| **The Theft**   | Produce is stolen in transit. | **OTP Escrow:** Payment is released only via a Marketer's code. |
-| **Bad Search**  | "Lagos" vs "lagos" mismatch.  | **Normalization:** All inputs stored as `.toLowerCase()`.       |
+The system is organized as a unified workspace hosting decoupled multi-tier components, bridging modular enterprise backend services with responsive frontend client applications.
 
----
+```text
+AgroFlow/
+│
+├── agroflow-backend/     # Enterprise Java 21 & Spring Boot 3.x REST API Engine
+├── frontend/             # Client User Interface (React / Next.js)
+└── docker-compose.yml    # Containerized Local Infrastructure Orchestration
+```
 
-## 🗺️ 4. THE FOUNDER'S ROADMAP
-
-### Phase 1: The Logic Engine (Current)
-
-- [x] **Farmer Dashboard:** Create and Delete harvests.
-- [x] **Transporter Board:** View and Filter by location.
-- [ ] **Marketer Demand Form:** Allow buyers to post what they need.
-- [ ] **Matchmaking Logic:** Automatically link Farmers and Marketers.
-
-### Phase 2: The Trust & Identity Layer
-
-- **Authentication:** SMS-based login (OTP) to verify real users.
-- **Cloud Migration:** Move from `localStorage` to **Firebase/Supabase**.
-
-### Phase 3: The "Uber" Experience
-
-- **Mobile-First Design:** High-contrast UI for bright market environments.
-- **Maps Integration:** Real-time distance and route calculation.
-- **Notifications:** Alerting Transporters to nearby jobs.
+### Core Infrastructure Foundations
+* **Runtime Environment:** Java 21 LTS / Spring Boot 3.x.
+* **Database Engine:** PostgreSQL 17 for high-performance relational storage and complex query execution.
+* **Database Migrations:** Managed dynamically via the Flyway Evolution Engine. Migration scripts are maintained within version control under `src/main/resources/db/migration`.
+* **Security & Environment Boundaries:** Zero hardcoded configuration secrets. Production-ready configurations utilize externalized environment variables injected into the runtime context, preserving credential isolation across local and shared team spaces.
 
 ---
 
-## 📜 5. CORE LAWS OF THE CODEBASE
+##  3. High-Availability & Resilient Edge Case Logic
 
-1.  **Trust is Currency:** No transaction moves without digital verification.
-2.  **Mobile First:** It must work on a cheap Android phone on 3G networks.
-3.  **Data Integrity:** Use `.toLocaleString()` for currency and `Date()` for timestamps.
+To survive real-world deployment challenges in emerging markets, the platform implements architectural mitigations for common logistics failure states:
 
-🛡️ 6. THE REALITY CHECK
+| Production Vector | Real-World Risk | Protocol Mitigation |
+| :--- | :--- | :--- |
+| **Partial Contract Fulfillment** | A Marketer accepts only a partial subset of a large available harvest volume. | **The Splitter Pattern:** Core ledger state machinery automatically splits the transaction, spinning off a new, linked market listing for the remaining balance. |
+| **Transporter Default / No-Show** | A registered logistics provider claims a job but fails to arrive within the critical harvest window. | **Heartbeat State Eviction:** A background cron service continuously monitors active pickups. Unfulfilled jobs automatically evict and return to the `AVAILABLE` pool after a strict 4-hour timeout. |
+| **Cargo Interception / Transit Theft** | High-value produce is redirected or stolen during transit. | **OTP Cryptographic Escrow:** Funds are securely held in an escrow state and released to the transporter's ledger *only* when the receiving Marketer inputs a unique, system-generated verification token at delivery. |
+| **Geographic Ingestion Variant** | Regional differences in data entry casing cause missing matches (e.g., "Lagos" vs "lagos"). | **Canonical Data Normalization:** Persistence logic strictly sanitizes and maps all structural geographical references to normalized lowercase strings before executing queries. |
 
-The Requirement: Writing code alone is not enough to make AgroFlow a life-changing product.
+---
 
-The Shift: You must think beyond features and operate as a Product Engineer.
+##  4. Core Product Engineering Principles
 
-The Focus: Every decision must consider real users, real risks, and real-world constraints.
+1. **Environment-First Constraints:** Interfaces and transmission protocols are engineered around local real-world boundaries—specifically optimizing for high-glare market viewports, low-tier Android hardware, and high-latency 3G wireless infrastructure.
+2. **Deterministic Transactional Integrity:** Trust is managed mathematically. No status transitions, ledger alterations, or logistics assignments occur without programmatic validation and secure digital verification tokens.
+3. **Strict Data Sanitization:** All fiscal fields map to high-precision numeric formats to avoid rounding drifts, while transactional histories employ explicit, unified timezone timestamps.
 
-🧠 7. PRODUCT ENGINEERING PRINCIPLES
+---
 
-User Understanding: Will a 50-year-old farmer understand the interface without guidance?
+##  5. Getting Started (Local Engineering Setup)
 
-Environment Awareness: The product must work in bright markets on low-end Android phones.
+Follow these steps to initialize the local containerized infrastructure and compile the core engine.
 
-Security Thinking: The system must prevent fake transporters and protect goods in transit.
+### System Prerequisites
+* **Java Development Kit (JDK):** Version 21 LTS or higher
+* **Container Engine:** Docker Desktop / Docker Daemon
+* **Build Tooling:** Apache Maven 3.x (or wrapped execution scripts)
 
-Persistence: Difficult bugs are inevitable and must be solved, not avoided.
+### 1. Initialize Containerized Infrastructure
+Spin up the detached PostgreSQL 17 database node from the project root directory:
+```bash
+docker-compose up -d
+```
 
-🚀 8. THE FINAL VERDICT
+### 2. Configure Environment Context
+Inject the required local credentials into your IDE or terminal shell environment to authorize the application data-source connection:
+* `AGROFLOW_DB_USER`
+* `AGROFLOW_DB_PASSWORD`
 
-The Outcome: Completing AgroFlow fully results in a portfolio stronger than 95% of developers in Nigeria.
-
-The Opportunity: The project can either scale into a major company or unlock elite job opportunities.
-
-The Conclusion: In both cases, AgroFlow becomes your professional exit point.
+### 3. Compile and Boot the Application Engine
+Navigate to the backend module directory, resolve dependencies, and launch the Spring Boot runtime:
+```bash
+cd agroflow-backend
+./mvnw spring-boot:run
+```
+The REST engine will initialize, automatically execute pending Flyway migration baselines, and expose its endpoints for incoming client consumption on port `8080`.
