@@ -4,6 +4,7 @@ package com.agroflow.backend.exception;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -66,26 +67,50 @@ public class GlobalExceptionHandler {
               .build();
       return new ResponseEntity<>(error,HttpStatus.CONFLICT);
    }
-   @ExceptionHandler(jakarta.validation.UnexpectedTypeException.class)
-   public ResponseEntity<ErrorResponse> handleUnexpectedType(jakarta.validation.UnexpectedTypeException ex,HttpServletRequest request){
+   @ExceptionHandler(HttpMessageNotReadableException.class)
+   public ResponseEntity<ErrorResponse> handleMessageNotReadable(HttpMessageNotReadableException ex, HttpServletRequest request) {
+      String message = "Invalid system role. Allowed values: FARMER, TRANSPORTER, MARKETER, ADMIN";
+
       ErrorResponse error = ErrorResponse.builder()
               .timestamp(LocalDateTime.now())
               .status(HttpStatus.BAD_REQUEST.value())
-              .error("Validation Configuration Error")
-              .message("Invalid system role value.")
+              .error("Validation Failed")
+              .message(message)
               .path(request.getRequestURI())
               .build();
-      return new ResponseEntity<>(error,HttpStatus.BAD_REQUEST);
+      return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
    }
-   @ExceptionHandler(IllegalStateException.class)
-   public ResponseEntity<ErrorResponse> handleIllegalState(IllegalStateException ex,HttpServletRequest request){
+   @ExceptionHandler(IllegalArgumentException.class)
+   public ResponseEntity<ErrorResponse> handleIllegalArgument(IllegalArgumentException ex, HttpServletRequest request) {
       ErrorResponse error = ErrorResponse.builder()
               .timestamp(LocalDateTime.now())
               .status(HttpStatus.BAD_REQUEST.value())
-              .error("Invalid Request")
-              .message(ex.getMessage())
+              .error("Invalid Input")
+              .message(ex.getMessage()) // This will say "Invalid System Role: Transporter"
               .path(request.getRequestURI())
               .build();
-      return new ResponseEntity<>(error,HttpStatus.BAD_REQUEST);
+      return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
    }
+//   @ExceptionHandler(jakarta.validation.UnexpectedTypeException.class)
+//   public ResponseEntity<ErrorResponse> handleUnexpectedType(jakarta.validation.UnexpectedTypeException ex,HttpServletRequest request){
+//      ErrorResponse error = ErrorResponse.builder()
+//              .timestamp(LocalDateTime.now())
+//              .status(HttpStatus.BAD_REQUEST.value())
+//              .error("Validation Configuration Error")
+//              .message("Invalid system role value.")
+//              .path(request.getRequestURI())
+//              .build();
+//      return new ResponseEntity<>(error,HttpStatus.BAD_REQUEST);
+//   }
+//   @ExceptionHandler(IllegalStateException.class)
+//   public ResponseEntity<ErrorResponse> handleIllegalState(IllegalStateException ex,HttpServletRequest request){
+//      ErrorResponse error = ErrorResponse.builder()
+//              .timestamp(LocalDateTime.now())
+//              .status(HttpStatus.BAD_REQUEST.value())
+//              .error("Invalid Request")
+//              .message(ex.getMessage())
+//              .path(request.getRequestURI())
+//              .build();
+//      return new ResponseEntity<>(error,HttpStatus.BAD_REQUEST);
+//   }
 }

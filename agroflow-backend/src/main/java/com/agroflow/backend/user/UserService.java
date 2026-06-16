@@ -29,7 +29,7 @@ public class UserService {
                     .email(request.getEmail())
                     .passwordHash(hashedPassword)
                     .phoneNumber(request.getPhoneNumber())
-                    .systemRole(SystemRole.valueOf(request.getSystemRole()))
+                    .systemRole(request.getSystemRole())
                     .publicId(UUID.randomUUID())
                     .build();
         } catch (IllegalArgumentException e){
