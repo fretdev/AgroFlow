@@ -43,7 +43,9 @@ public class GlobalExceptionHandler {
    }
    @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleGlobalException(Exception ex,HttpServletRequest request){
-       ErrorResponse error = ErrorResponse.builder()
+      ex.printStackTrace();
+
+      ErrorResponse error = ErrorResponse.builder()
                .timestamp(LocalDateTime.now())
                .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
                .error("Internal Server Error")
@@ -91,26 +93,4 @@ public class GlobalExceptionHandler {
               .build();
       return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
    }
-//   @ExceptionHandler(jakarta.validation.UnexpectedTypeException.class)
-//   public ResponseEntity<ErrorResponse> handleUnexpectedType(jakarta.validation.UnexpectedTypeException ex,HttpServletRequest request){
-//      ErrorResponse error = ErrorResponse.builder()
-//              .timestamp(LocalDateTime.now())
-//              .status(HttpStatus.BAD_REQUEST.value())
-//              .error("Validation Configuration Error")
-//              .message("Invalid system role value.")
-//              .path(request.getRequestURI())
-//              .build();
-//      return new ResponseEntity<>(error,HttpStatus.BAD_REQUEST);
-//   }
-//   @ExceptionHandler(IllegalStateException.class)
-//   public ResponseEntity<ErrorResponse> handleIllegalState(IllegalStateException ex,HttpServletRequest request){
-//      ErrorResponse error = ErrorResponse.builder()
-//              .timestamp(LocalDateTime.now())
-//              .status(HttpStatus.BAD_REQUEST.value())
-//              .error("Invalid Request")
-//              .message(ex.getMessage())
-//              .path(request.getRequestURI())
-//              .build();
-//      return new ResponseEntity<>(error,HttpStatus.BAD_REQUEST);
-//   }
 }
