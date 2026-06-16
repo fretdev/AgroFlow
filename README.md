@@ -62,19 +62,19 @@ To survive real-world deployment challenges in emerging markets, the platform im
 
 ---
 
-##  5. Getting Started (Local Engineering Setup)
+## 5. Getting Started (Local Engineering Setup)
 
-Follow these steps to initialize the local containerized infrastructure and compile the core engine.
+Follow these steps to initialize the local containerized infrastructure and launch the development server.
 
-### System Prerequisites
-* **Java Development Kit (JDK):** Version 21 LTS or higher
-* **Container Engine:** Docker Desktop / Docker Daemon
-* **Build Tooling:** Apache Maven 3.x (or wrapped execution scripts)
+### Prerequisites
+* **Java Development Kit:** JDK 21 LTS (Eclipse Adoptium / HotSpot recommended)
+* **Container Runtime:** Docker Desktop / Docker Engine
+* **Build Tooling:** Apache Maven 3.x (or included wrapper)
 
-### 1. Initialize Containerized Infrastructure
-Spin up the detached PostgreSQL 17 database node from the project root directory:
+### 1. Initialize Environment Variables
+Clone the local environment template to establish your development variables:
 ```bash
-docker-compose up -d
+cp .env.example .env
 ```
 
 ### 2. Configure Environment Context

@@ -1,12 +1,15 @@
-version: '3.8'
-
 services:
-  postgres-db:
+  postgres_local:
     image: postgres:17
     container_name: agroflow_postgres_local
-    environment:
-      POSTGRES_DB: agroflow_db
-      POSTGRES_USER: agroflow_dev_user
-      POSTGRES_PASSWORD: agroflow_dev_password
     ports:
-      - "5432:5432"
+      - "${AGROFLOW_DB_PORT}:5432"
+    environment:
+      POSTGRES_DB: ${AGROFLOW_DB_NAME}
+      POSTGRES_USER: ${AGROFLOW_DB_USER}
+      POSTGRES_PASSWORD: ${AGROFLOW_DB_PASSWORD}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:

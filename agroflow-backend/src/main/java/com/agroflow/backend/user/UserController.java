@@ -1,8 +1,10 @@
 package com.agroflow.backend.user;
 
 import com.agroflow.backend.user.dto.UserRegistrationRequest;
+import com.agroflow.backend.user.dto.UserResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,8 +18,8 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/register")
-    public ResponseEntity<User> registerUser(@Valid @RequestBody UserRegistrationRequest request){
-        User savedUser = userService.registerUser(request);
-        return ResponseEntity.ok(savedUser);
+    public ResponseEntity<UserResponse> registerUser(@Valid @RequestBody UserRegistrationRequest request){
+        UserResponse response = userService.registerUser(request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 }

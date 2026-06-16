@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity
 @Table(name = "users")
@@ -15,6 +16,9 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "public_id",nullable = false,unique = true,updatable = false)
+    private UUID publicId = UUID.randomUUID();
 
     @Column(name = "full_name", nullable = false,length = 150)
     private String fullName;

@@ -150,16 +150,36 @@ const deleteJob = (id) =>{
         renderJobs()
     }
 }
-const filterJobs = () =>{
+const masterFilter = () =>{
     const selectedLocation = document.getElementById("location-filter").value.toLowerCase()
     const searchInput = document.getElementById('search-input').value.toLowerCase()
+    const selectedMatch = document.getElementById('match-filter').value
 
     const filteredJobs = availableJobs.filter(job => {
         const locationMatch = selectedLocation === "all" || job.pickupLocation?.toLowerCase() === selectedLocation || job.region?.toLowerCase() === selectedLocation
 
         const produceMatch = job.produce.toLowerCase().includes(searchInput)
+
+        let fromLocation
+        if(job.role === "Marketer"){
+            fromLocation = job.region
+        } else {
+            fromLocation = job.pickupLocation
+        }
+
+        const foundMatch = availableJobs.some(otherJob =>
+            otherJob.role !== job.role && otherJob.produce === job.produce && (otherJob.pickupLocation === fromLocation || otherJob.region === fromLocation)
+        )
+
+        let matchMatch = true
+        if(selectedMatch === 'match'){
+            matchMatch = foundMatch
+        } else if(selectedMatch === 'no-match'){
+            matchMatch = !foundMatch
+        }
+        // for 'all', matchMatch remains true
         
-        return locationMatch && produceMatch
+        return locationMatch && produceMatch && matchMatch
     
     })
     
@@ -169,9 +189,11 @@ const filterJobs = () =>{
 const clearFilters = ()=>{
     const selectedLocation = document.getElementById("location-filter")
     const searchInput = document.getElementById('search-input')
+    const matchFilter = document.getElementById('match-filter')
     searchInput.value = ""
-    selectedLocation.value ="all"
+    selectedLocation.value ="All"
+    matchFilter.value = "all"
     renderJobs()
 }
-renderJobs()
 
+renderJobs()

@@ -1,6 +1,7 @@
 package com.agroflow.backend.user.dto;
 
 import com.agroflow.backend.user.SystemRole;
+import com.agroflow.backend.validation.ValueOfEnum;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -33,6 +34,7 @@ public class UserRegistrationRequest {
     @Size(max = 20,message = "Phone number must not exceed 20 characters")
     private String phoneNumber;
 
-    @NotNull(message = "System role is required")
-    private SystemRole systemRole;
+    @NotBlank(message = "System role is required")
+    @ValueOfEnum(enumClass = SystemRole.class)
+    private String systemRole;
 }
