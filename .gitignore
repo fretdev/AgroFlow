@@ -1,2 +1,39 @@
-tests
+# --- Root Level ---
 .env
+
+# --- Backend Application (AgroFlow-Backend) ---
+agroflow-backend/target/
+agroflow-backend/.mvn/wrapper/maven-wrapper.jar
+!agroflow-backend/**/src/main/**/target/
+!agroflow-backend/**/src/test/**/target/
+
+# STS
+agroflow-backend/.apt_generated
+agroflow-backend/.classpath
+agroflow-backend/.factorypath
+agroflow-backend/.project
+agroflow-backend/.settings
+agroflow-backend/.springBeans
+agroflow-backend/.sts4-cache
+
+# IntelliJ IDEA
+.idea/
+*.iws
+*.iml
+*.ipr
+
+# NetBeans
+agroflow-backend/nbproject/private/
+agroflow-backend/nbbuild/
+agroflow-backend/dist/
+agroflow-backend/nbdist/
+agroflow-backend/.nb-gradle/
+agroflow-backend/build/
+!agroflow-backend/**/src/main/**/build/
+!agroflow-backend/**/src/test/**/build/
+
+# VS Code
+.vscode/
+
+# Documentation
+agroflow-backend/docs/
