@@ -1,15 +1,11 @@
 package com.agroflow.backend.user;
 
-import com.agroflow.backend.user.dto.UserRegistrationRequest;
 import com.agroflow.backend.user.dto.UserResponse;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.security.Principal;
 
 @RestController
 @RequestMapping("/api/v1/users")
@@ -17,9 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
     private final UserService userService;
 
-    @PostMapping("/register")
-    public ResponseEntity<UserResponse> registerUser(@Valid @RequestBody UserRegistrationRequest request){
-        UserResponse response = userService.registerUser(request);
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    @GetMapping("/me")
+    public ResponseEntity<UserResponse> getMyProfile(Principal principal){
+        return ResponseEntity.ok(userService.getProfile(principal.getName()));
     }
 }

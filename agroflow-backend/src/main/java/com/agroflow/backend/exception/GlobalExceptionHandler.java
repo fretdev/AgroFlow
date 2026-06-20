@@ -24,6 +24,7 @@ public class GlobalExceptionHandler {
                .message(ex.getMessage())
                .path(request.getRequestURI())
                .build();
+      System.out.println("DEBUG: UserAlreadyExistsException triggered for: " + ex.getMessage());
        return new ResponseEntity<>(error,HttpStatus.CONFLICT);
    }
    @ExceptionHandler(MethodArgumentNotValidException.class)

@@ -2,6 +2,9 @@ package com.agroflow.backend.user;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,13 +20,14 @@ import java.util.UUID;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder(toBuilder = true)
+@EntityListeners(AuditingEntityListener.class)
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "public_id",nullable = false,unique = true,updatable = false)
-    private UUID publicId = UUID.randomUUID();
+    private UUID publicId;
 
     @Column(name = "full_name", nullable = false,length = 150)
     private String fullName;
@@ -45,33 +49,14 @@ public class User implements UserDetails {
     @Column(name = "is_active",nullable = false)
     private boolean isActive = true;
 
+    @CreatedDate
     @Column(name = "created_at",nullable = false,updatable = false)
     private LocalDateTime createdAt;
 
+    @LastModifiedDate
     @Column(name = "updated_at",nullable = false)
     private LocalDateTime updatedAt;
 
-    @PrePersist
-    protected void onCreate(){
-        this.createdAt = LocalDateTime.now();
-        this.updatedAt = LocalDateTime.now();
-    }
-
-    @PreUpdate
-    protected void onUpdate(){
-        this.updatedAt = LocalDateTime.now();
-    }
-
-    public void updateProfile(String fullName, String phoneNumber){
-        if(fullName == null || fullName.isBlank()){
-            throw new IllegalArgumentException("Full name cannot be blank");
-        }
-        if(phoneNumber == null || phoneNumber.isBlank()){
-            throw new IllegalArgumentException("Phone number cannot be blank");
-        }
-        this.fullName = fullName;
-        this.phoneNumber=phoneNumber;
-    }
     public void updatePassword(String newEncryptedHash){
         if(newEncryptedHash == null || newEncryptedHash.isBlank()){
             throw new IllegalArgumentException("Password hash cannot be blank");
