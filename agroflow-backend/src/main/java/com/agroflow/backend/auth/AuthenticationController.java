@@ -3,6 +3,7 @@ package com.agroflow.backend.auth;
 import com.agroflow.backend.auth.dto.AuthenticationRequest;
 import com.agroflow.backend.auth.dto.AuthenticationResponse;
 import com.agroflow.backend.user.dto.UserRegistrationRequest;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,7 +18,7 @@ public class AuthenticationController {
     private final AuthenticationService service;
 
     @PostMapping("/register")
-    public ResponseEntity<AuthenticationResponse> register(@RequestBody UserRegistrationRequest request){
+    public ResponseEntity<AuthenticationResponse> register(@Valid @RequestBody UserRegistrationRequest request){
         return ResponseEntity.ok(service.register(request));
     }
     @PostMapping("/authenticate")
