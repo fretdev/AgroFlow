@@ -2,6 +2,7 @@ package com.agroflow.backend.auth;
 
 import com.agroflow.backend.auth.dto.AuthenticationRequest;
 import com.agroflow.backend.auth.dto.AuthenticationResponse;
+import com.agroflow.backend.security.JwtService;
 import com.agroflow.backend.user.User;
 import com.agroflow.backend.user.UserRepository;
 import com.agroflow.backend.user.dto.UserRegistrationRequest;

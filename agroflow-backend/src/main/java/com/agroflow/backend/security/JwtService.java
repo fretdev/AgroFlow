@@ -1,4 +1,4 @@
-package com.agroflow.backend.auth;
+package com.agroflow.backend.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
