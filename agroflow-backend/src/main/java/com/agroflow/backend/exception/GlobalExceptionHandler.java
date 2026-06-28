@@ -104,4 +104,15 @@ public class GlobalExceptionHandler {
               .build();
       return new ResponseEntity<>(error,HttpStatus.NOT_FOUND);
    }
+   @ExceptionHandler(IllegalStateException.class)
+    public ResponseEntity<ErrorResponse> handleIllegalState(IllegalStateException ex, HttpServletRequest request){
+       ErrorResponse error = ErrorResponse.builder()
+               .timestamp(LocalDateTime.now())
+               .status(HttpStatus.CONFLICT.value())
+               .error("Duplicate Resource Conflict")
+               .message(ex.getMessage())
+               .path(request.getRequestURI())
+               .build();
+       return new ResponseEntity<>(error,HttpStatus.CONFLICT);
+   }
 }

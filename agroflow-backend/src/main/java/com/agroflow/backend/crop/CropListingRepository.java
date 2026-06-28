@@ -11,4 +11,6 @@ public interface CropListingRepository extends JpaRepository<CropListing,Long> {
     List<CropListing> findAllByFarmerId(Long farmerId);
 
     List<CropListing> findAllByCategoryAndIsActiveTrue(String category);
+
+    boolean existsByFarmerIdAndCropNameAndIsSoldFalse(Long farmerId,String cropName);
 }

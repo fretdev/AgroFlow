@@ -19,6 +19,9 @@ public class CropListingService {
     public CropListingResponse createCropListing(CropListingRequest request, Long farmerId){
         var farmer = userRepository.findById(farmerId).orElseThrow(()->new ResourceNotFoundException("Farmer not found"));
 
+        if(cropListingRepository.existsByFarmerIdAndCropNameAndIsSoldFalse(farmerId,request.cropName())){
+            throw new IllegalStateException("YOu already have an active listing for " + request.cropName() + ".Please update the existing listing instead.");
+        }
         CropListing listing = CropListing.builder()
                 .cropName(request.cropName())
                 .description(request.description())
