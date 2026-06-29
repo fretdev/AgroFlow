@@ -2,12 +2,13 @@ package com.agroflow.backend.crop;
 
 import com.agroflow.backend.crop.dto.CropListingRequest;
 import com.agroflow.backend.crop.dto.CropListingResponse;
+import com.agroflow.backend.crop.dto.UpdateCropListingRequest;
 import com.agroflow.backend.exception.ResourceNotFoundException;
 import com.agroflow.backend.user.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDateTime;
 
 @Service
@@ -36,6 +37,22 @@ public class CropListingService {
                 .build();
         CropListing savedListing = cropListingRepository.save(listing);
         return mapToResponse(savedListing);
+    }
+    @Transactional
+    public CropListingResponse updateCropListing(UpdateCropListingRequest request, Long farmerId,Long listingId){
+        CropListing existingCropListing = cropListingRepository.findById(listingId).orElseThrow(()->new ResourceNotFoundException("Listing not found with id: "+ listingId));
+        if(!existingCropListing.getFarmer().getId().equals(farmerId)){
+            throw new AccessDeniedException("You are not authorized to update this listing");
+        }
+        existingCropListing.updateDetails(
+                request.cropName(),
+                request.description(),
+                request.category(),
+                request.quantity(),
+                request.pricePerUnit(),
+                request.location()
+        );
+        return mapToResponse(existingCropListing);
     }
 
     private CropListingResponse mapToResponse(CropListing entity) {

@@ -59,4 +59,13 @@ public class CropListing {
     @LastModifiedDate
     @Column(insertable = false)
     private LocalDateTime updatedAt;
+
+    public void updateDetails(String cropName, String description, String category, Integer quantity, BigDecimal pricePerUnit,String location){
+        this.cropName = cropName;
+        this.description = description;
+        this.category = category;
+        this.quantity = quantity;
+        this.pricePerUnit = pricePerUnit;
+        this.location = location;
+    }
 }

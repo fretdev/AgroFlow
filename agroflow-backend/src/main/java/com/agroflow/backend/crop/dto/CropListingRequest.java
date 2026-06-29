@@ -16,7 +16,7 @@ public record CropListingRequest (
     String category,
 
     @Min(value = 1,message = "Quantity must be at least 1")
-    int quantity,
+    Integer quantity,
 
     @NotNull(message = "Price is required")
     @DecimalMin(value = "0.01",message = "Price must be greater than zero")
