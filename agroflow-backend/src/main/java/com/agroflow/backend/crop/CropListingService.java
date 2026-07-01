@@ -5,10 +5,14 @@ import com.agroflow.backend.crop.dto.CropListingResponse;
 import com.agroflow.backend.crop.dto.UpdateCropListingRequest;
 import com.agroflow.backend.exception.ResourceNotFoundException;
 import com.agroflow.backend.user.UserRepository;
-import jakarta.transaction.Transactional;
+
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.time.LocalDateTime;
 
 @Service
@@ -53,6 +57,10 @@ public class CropListingService {
                 request.location()
         );
         return mapToResponse(existingCropListing);
+    }
+    @Transactional(readOnly = true)
+    public Page<CropListingResponse> getAllActiveCrops(Pageable pageable){
+        return cropListingRepository.findByIsSoldFalse(pageable).map(this::mapToResponse);
     }
 
     private CropListingResponse mapToResponse(CropListing entity) {
