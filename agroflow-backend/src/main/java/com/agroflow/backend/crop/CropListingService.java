@@ -9,7 +9,7 @@ import com.agroflow.backend.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,6 +34,7 @@ public class CropListingService {
                 .quantity(request.quantity())
                 .pricePerUnit(request.pricePerUnit())
                 .location(request.location())
+
                 .farmer(farmer)
                 .createdAt(LocalDateTime.now())
                 .isActive(true)
@@ -43,11 +44,10 @@ public class CropListingService {
         return mapToResponse(savedListing);
     }
     @Transactional
+    @PreAuthorize("@cropListingRepository.existsByIdAndFarmerId(#listingId,#farmerId)")
     public CropListingResponse updateCropListing(UpdateCropListingRequest request, Long farmerId,Long listingId){
         CropListing existingCropListing = cropListingRepository.findById(listingId).orElseThrow(()->new ResourceNotFoundException("Listing not found with id: "+ listingId));
-        if(!existingCropListing.getFarmer().getId().equals(farmerId)){
-            throw new AccessDeniedException("You are not authorized to update this listing");
-        }
+
         existingCropListing.updateDetails(
                 request.cropName(),
                 request.description(),
@@ -62,7 +62,10 @@ public class CropListingService {
     public Page<CropListingResponse> getAllActiveCrops(Pageable pageable){
         return cropListingRepository.findByIsSoldFalse(pageable).map(this::mapToResponse);
     }
-
+    @Transactional(readOnly = true)
+    public Page<CropListingResponse> getAllFarmerCropListing(Pageable pageable,Long farmerId){
+        return cropListingRepository.findAllByFarmerId(farmerId,pageable).map(this::mapToResponse);
+    }
     private CropListingResponse mapToResponse(CropListing entity) {
         return new CropListingResponse(
                 entity.getId(),

@@ -18,4 +18,10 @@ public interface CropListingRepository extends JpaRepository<CropListing,Long> {
     boolean existsByFarmerIdAndCropNameAndIsSoldFalse(Long farmerId,String cropName);
 
     Page<CropListing> findByIsSoldFalse(Pageable pageable);
+
+    Page<CropListing> findAllByFarmerId(Long farmerId,Pageable pageable);
+
+    boolean existsByFarmerId(Long farmerId);
+
+    boolean existsByIdAndFarmerId(Long id,Long farmerId);
 }

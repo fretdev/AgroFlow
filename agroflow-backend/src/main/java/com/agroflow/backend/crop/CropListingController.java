@@ -35,4 +35,9 @@ public class CropListingController {
         Page<CropListingResponse> response = cropListingService.getAllActiveCrops(pageable);
         return ResponseEntity.ok(response);
     }
+    @GetMapping("/my-listings")
+    public ResponseEntity<Page<CropListingResponse>> getAllFarmerCrops(@PageableDefault(size = 10,sort = "createdAt",direction = Sort.Direction.DESC)Pageable pageable,@AuthenticationPrincipal(expression = "id")Long farmerId){
+        Page<CropListingResponse> response = cropListingService.getAllFarmerCropListing(pageable,farmerId);
+        return ResponseEntity.ok(response);
+    }
 }
