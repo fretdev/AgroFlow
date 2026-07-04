@@ -26,8 +26,8 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth ->auth
                         .requestMatchers("/api/v1/auth/**").permitAll()
-                        .requestMatchers(HttpMethod.GET,"/api/v1/crops/**").permitAll()
                         .requestMatchers(HttpMethod.GET,"/api/v1/crops/my-listings**").authenticated()
+                        .requestMatchers(HttpMethod.GET,"/api/v1/crops/**").permitAll()
                         .requestMatchers(HttpMethod.POST,"/api/v1/crops/**").authenticated()
                         .requestMatchers(HttpMethod.PUT,"/api/v1/crops/**").authenticated()
                         .requestMatchers(HttpMethod.PATCH,"/api/v1/crops/**").authenticated()

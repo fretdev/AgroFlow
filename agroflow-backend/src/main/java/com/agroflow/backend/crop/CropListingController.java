@@ -3,6 +3,7 @@ package com.agroflow.backend.crop;
 import com.agroflow.backend.crop.dto.CropListingRequest;
 import com.agroflow.backend.crop.dto.CropListingResponse;
 import com.agroflow.backend.crop.dto.UpdateCropListingRequest;
+import com.agroflow.backend.user.User;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -40,4 +41,14 @@ public class CropListingController {
         Page<CropListingResponse> response = cropListingService.getAllFarmerCropListing(pageable,farmerId);
         return ResponseEntity.ok(response);
     }
+    @GetMapping("{listingId}")
+    public ResponseEntity<CropListingResponse> getCropListingById(@PathVariable Long listingId,@AuthenticationPrincipal Object principal){
+        Long currentUserId = null;
+        if(principal instanceof User user){
+            currentUserId = user.getId();
+        }
+        CropListingResponse response = cropListingService.getCropListingById(listingId,currentUserId);
+        return ResponseEntity.ok(response);
+    }
 }
+

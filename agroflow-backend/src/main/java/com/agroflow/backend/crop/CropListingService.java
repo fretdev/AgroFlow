@@ -9,6 +9,7 @@ import com.agroflow.backend.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -65,6 +66,17 @@ public class CropListingService {
     @Transactional(readOnly = true)
     public Page<CropListingResponse> getAllFarmerCropListing(Pageable pageable,Long farmerId){
         return cropListingRepository.findAllByFarmerId(farmerId,pageable).map(this::mapToResponse);
+    }
+    @Transactional(readOnly = true)
+    public CropListingResponse getCropListingById(Long listingId,Long currentUserId){
+        CropListing crop = cropListingRepository.findById(listingId).orElseThrow(()->new ResourceNotFoundException("Listing not found with id: "+listingId));
+        if(crop.getFarmer().getId().equals(currentUserId)){
+            return mapToResponse(crop);
+        }
+        if(crop.isSold()){
+            throw new AccessDeniedException("This listing is no longer available.");
+        }
+        return mapToResponse(crop);
     }
     private CropListingResponse mapToResponse(CropListing entity) {
         return new CropListingResponse(
