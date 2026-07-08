@@ -5,7 +5,6 @@ import com.agroflow.backend.crop.dto.CropListingResponse;
 import com.agroflow.backend.crop.dto.UpdateCropListingRequest;
 import com.agroflow.backend.exception.ResourceNotFoundException;
 import com.agroflow.backend.user.UserRepository;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -70,12 +69,21 @@ public class CropListingService {
     @Transactional(readOnly = true)
     public CropListingResponse getCropListingById(Long listingId,Long currentUserId){
         CropListing crop = cropListingRepository.findById(listingId).orElseThrow(()->new ResourceNotFoundException("Listing not found with id: "+listingId));
-        if(crop.getFarmer().getId().equals(currentUserId)){
-            return mapToResponse(crop);
+
+        boolean isOwner = (crop.getFarmer().getId().equals(currentUserId));
+
+        if(!isOwner && crop.isSold()){
+            throw  new AccessDeniedException("This listing is no longer available.");
         }
-        if(crop.isSold()){
-            throw new AccessDeniedException("This listing is no longer available.");
+        return mapToResponse(crop);
+    }
+    @Transactional
+    public CropListingResponse markAsSoldAndInactive(Long listingId,Long farmerId){
+        CropListing crop = cropListingRepository.findById(listingId).orElseThrow(()->new ResourceNotFoundException("Listing not found with id: "+listingId));
+        if(!crop.getFarmer().getId().equals(farmerId)) {
+            throw new AccessDeniedException("You are not authorized to update this listing");
         }
+        crop.markAsSold();
         return mapToResponse(crop);
     }
     private CropListingResponse mapToResponse(CropListing entity) {

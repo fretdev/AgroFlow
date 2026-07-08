@@ -50,5 +50,10 @@ public class CropListingController {
         CropListingResponse response = cropListingService.getCropListingById(listingId,currentUserId);
         return ResponseEntity.ok(response);
     }
+    @PatchMapping("{listingId}/sold")
+    public ResponseEntity<CropListingResponse> markCropAsSoldAndInactive(@PathVariable Long listingId, @AuthenticationPrincipal(expression = "id") Long farmerId){
+       CropListingResponse response = cropListingService.markAsSoldAndInactive(listingId,farmerId);
+       return ResponseEntity.ok(response);
+    }
 }
 

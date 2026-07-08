@@ -68,4 +68,11 @@ public class CropListing {
         this.pricePerUnit = pricePerUnit;
         this.location = location;
     }
+    public void markAsSold(){
+        if(this.isSold){
+            throw new IllegalStateException("This listing as already been marked as sold.");
+        }
+        this.isSold = true;
+        this.isActive = false;
+    }
 }
