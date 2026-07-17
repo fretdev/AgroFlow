@@ -32,8 +32,8 @@ public class CropListingController {
         return  ResponseEntity.ok(response);
     }
     @GetMapping
-    public ResponseEntity<Page<CropListingResponse>> getAllCrops(@PageableDefault(size = 10,sort = "createdAt",direction = Sort.Direction.DESC)Pageable pageable){
-        Page<CropListingResponse> response = cropListingService.getAllActiveCrops(pageable);
+    public ResponseEntity<Page<CropListingResponse>> getAllCrops(@RequestParam(required = false) String cropName, @RequestParam(required = false)Double minPrice, @RequestParam(required = false)Double maxPrice, @RequestParam(required = false)String location, @PageableDefault(size = 10,sort = "createdAt",direction = Sort.Direction.DESC)Pageable pageable){
+        Page<CropListingResponse> response = cropListingService.getAllActiveCrops(cropName,minPrice,maxPrice,location, pageable);
         return ResponseEntity.ok(response);
     }
     @GetMapping("/my-listings")

@@ -20,10 +20,10 @@ public class CropSpecifications {
                 ));
             }
             if(minPrice != null){
-                predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("price"),minPrice));
+                predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("pricePerUnit"),minPrice));
             }
             if(maxPrice != null){
-                predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("price"),maxPrice));
+                predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("pricePerUnit"),maxPrice));
             }
             if(location != null && !location.isEmpty()){
                 predicates.add(criteriaBuilder.equal(
@@ -31,6 +31,7 @@ public class CropSpecifications {
                         location.trim().toLowerCase()
                 ));
             }
+            predicates.add(criteriaBuilder.isFalse(root.get("isSold")));
             return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
         };
     }

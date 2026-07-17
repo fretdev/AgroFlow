@@ -127,4 +127,15 @@ public class GlobalExceptionHandler {
                .build();
        return new ResponseEntity<>(error,HttpStatus.FORBIDDEN);
    }
+   @ExceptionHandler(org.springframework.web.servlet.resource.NoResourceFoundException.class)
+   public ResponseEntity<ErrorResponse> handleNoResourceFound(org.springframework.web.servlet.resource.NoResourceFoundException ex, HttpServletRequest request){
+      ErrorResponse error = ErrorResponse.builder()
+              .timestamp(LocalDateTime.now())
+              .status(HttpStatus.NOT_FOUND.value())
+              .error("Endpoint Not Found")
+              .message("The requested endpoint does not exist.Please check the URL  for typos or trailing slashes.")
+              .path(request.getRequestURI())
+              .build();
+      return new ResponseEntity<>(error,HttpStatus.NOT_FOUND);
+   }
 }

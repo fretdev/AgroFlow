@@ -4,10 +4,12 @@ import com.agroflow.backend.crop.dto.CropListingRequest;
 import com.agroflow.backend.crop.dto.CropListingResponse;
 import com.agroflow.backend.crop.dto.UpdateCropListingRequest;
 import com.agroflow.backend.exception.ResourceNotFoundException;
+import com.agroflow.backend.specification.CropSpecifications;
 import com.agroflow.backend.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
@@ -59,8 +61,9 @@ public class CropListingService {
         return mapToResponse(existingCropListing);
     }
     @Transactional(readOnly = true)
-    public Page<CropListingResponse> getAllActiveCrops(Pageable pageable){
-        return cropListingRepository.findByIsSoldFalse(pageable).map(this::mapToResponse);
+    public Page<CropListingResponse> getAllActiveCrops(String cropName,Double minPrice,Double maxPrice,String location,Pageable pageable){
+        Specification<CropListing> specification = CropSpecifications.withFilters(cropName,minPrice,maxPrice,location);
+        return cropListingRepository.findAll(specification,pageable).map(this::mapToResponse);
     }
     @Transactional(readOnly = true)
     public Page<CropListingResponse> getAllFarmerCropListing(Pageable pageable,Long farmerId){
@@ -86,6 +89,7 @@ public class CropListingService {
         crop.markAsSold();
         return mapToResponse(crop);
     }
+
     private CropListingResponse mapToResponse(CropListing entity) {
         return new CropListingResponse(
                 entity.getId(),
