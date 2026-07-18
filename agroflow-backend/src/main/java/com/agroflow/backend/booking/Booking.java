@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+
 import java.time.LocalDateTime;
 
 @Entity
@@ -15,13 +16,12 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 public class Booking {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "crop_listing_id", nullable = false)
+    @JoinColumn(name = "crop_listing_id",nullable = false)
     private CropListing cropListing;
 
     @Column(nullable = false)
@@ -41,3 +41,5 @@ public class Booking {
     @Version
     private Long version;
 }
+
+

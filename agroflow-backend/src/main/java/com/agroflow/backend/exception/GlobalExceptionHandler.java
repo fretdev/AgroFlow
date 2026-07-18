@@ -138,4 +138,15 @@ public class GlobalExceptionHandler {
               .build();
       return new ResponseEntity<>(error,HttpStatus.NOT_FOUND);
    }
+   @ExceptionHandler(CropAlreadyBookedException.class)
+   public ResponseEntity<ErrorResponse> handleCropAlreadyBooked(CropAlreadyBookedException ex, HttpServletRequest request){
+      ErrorResponse error = ErrorResponse.builder()
+              .timestamp(LocalDateTime.now())
+              .status(HttpStatus.CONFLICT.value())
+              .error("Booking Conflict")
+              .message(ex.getMessage())
+              .path(request.getRequestURI())
+              .build();
+      return new ResponseEntity<>(error, HttpStatus.CONFLICT);
+   }
 }
