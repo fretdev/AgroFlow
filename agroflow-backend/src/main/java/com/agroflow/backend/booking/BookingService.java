@@ -15,22 +15,25 @@ public class BookingService {
     private final CropListingRepository cropListingRepository;
     private final BookingRepository bookingRepository;
 
-    @Transactional
-    public BookingResponse createBooking(Long cropId,Long buyerId){
-        CropListing listing = cropListingRepository.findById(cropId).orElseThrow(()->
-                new ResourceNotFoundException("Listing not found")
-                );
-        if(listing.isSold()){
-            throw new CropAlreadyBookedException("This crop listing has already been booked by another user.");
-        }
-        listing.markAsSold();
 
-        Booking booking = Booking.builder()
-                .cropListing(listing)
-                .buyerId(buyerId)
-                .status(BookingStatus.PENDING)
-                .build();
-        Booking savedBooking = bookingRepository.save(booking);
-        return BookingResponse.from(savedBooking);
+    @Transactional()
+    public BookingResponse createBooking(Long cropId,Long buyerId){
+            int updatedRows = cropListingRepository.markAsSoldIfAvailable(cropId);
+
+            if(updatedRows == 0){
+                throw new CropAlreadyBookedException("This crop listing has already been booked by another user.");
+            }
+            CropListing listing = cropListingRepository.findById(cropId).orElseThrow(() ->
+                    new ResourceNotFoundException("Listing not found")
+            );
+
+            Booking booking = Booking.builder()
+                    .cropListing(listing)
+                    .buyerId(buyerId)
+                    .status(BookingStatus.PENDING)
+                    .build();
+            Booking savedBooking = bookingRepository.save(booking);
+            return BookingResponse.from(savedBooking);
+
     }
 }

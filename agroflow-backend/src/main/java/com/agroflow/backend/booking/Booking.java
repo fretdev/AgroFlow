@@ -29,6 +29,7 @@ public class Booking {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
+    @Builder.Default
     private BookingStatus status = BookingStatus.PENDING;
 
     @CreationTimestamp
@@ -39,7 +40,8 @@ public class Booking {
     private LocalDateTime updatedAt;
 
     @Version
-    private Long version;
+    @Builder.Default
+    private Long version = 0L;
 }
 
 

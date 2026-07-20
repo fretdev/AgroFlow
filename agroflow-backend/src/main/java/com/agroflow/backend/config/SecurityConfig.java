@@ -31,6 +31,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/v1/auth/**").permitAll()
                         .requestMatchers(HttpMethod.GET,"/api/v1/crops/my-listings**").authenticated()
                         .requestMatchers(HttpMethod.GET,"/api/v1/crops/**").permitAll()
+                        .requestMatchers(HttpMethod.POST,"/api/v1/bookings/**").authenticated()
                         .requestMatchers(HttpMethod.POST,"/api/v1/crops/**").authenticated()
                         .requestMatchers(HttpMethod.PUT,"/api/v1/crops/**").authenticated()
                         .requestMatchers(HttpMethod.PATCH,"/api/v1/crops/**").authenticated()
