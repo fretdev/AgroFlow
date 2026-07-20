@@ -1,0 +1,1 @@
+CREATE INDEX idx_crop_listings_is_sold ON crop_listings(is_sold);

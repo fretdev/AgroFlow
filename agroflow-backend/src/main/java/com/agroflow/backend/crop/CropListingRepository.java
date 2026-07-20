@@ -28,9 +28,6 @@ public interface CropListingRepository extends JpaRepository<CropListing,Long>, 
     boolean existsByIdAndFarmerId(Long id,Long farmerId);
 
 
-    @Query("SELECT c FROM CropListing c WHERE c.id = :id")
-    Optional<CropListing> findByIdWithLock(Long id);
-
     @Modifying
     @Query("UPDATE CropListing c SET c.isSold = true WHERE c.id = :id AND c.isSold = false")
     int markAsSoldIfAvailable(@Param("id") Long id);
