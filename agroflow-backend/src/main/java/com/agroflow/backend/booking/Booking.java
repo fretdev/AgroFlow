@@ -59,6 +59,12 @@ public class Booking {
         }
         this.status = BookingStatus.CONFIRMED;
     }
+    public void expire(){
+        if(this.status != BookingStatus.PENDING){
+            throw new IllegalStateException("Only pending bookings can be expired");
+        }
+        this.status = BookingStatus.EXPIRED;
+    }
 }
 
 
