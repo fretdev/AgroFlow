@@ -9,9 +9,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+
 @Service
 @RequiredArgsConstructor
 public class BookingService {
+    private static final int BOOKING_EXPIRATION_MINUTES = 15;
     private final CropListingRepository cropListingRepository;
     private final BookingRepository bookingRepository;
 
@@ -31,6 +34,7 @@ public class BookingService {
                     .cropListing(listing)
                     .buyerId(buyerId)
                     .status(BookingStatus.PENDING)
+                    .expiresAt(LocalDateTime.now().plusMinutes(BOOKING_EXPIRATION_MINUTES))
                     .build();
             Booking savedBooking = bookingRepository.save(booking);
             return BookingResponse.from(savedBooking);
