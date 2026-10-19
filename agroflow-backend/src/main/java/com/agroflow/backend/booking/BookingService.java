@@ -6,11 +6,13 @@ import com.agroflow.backend.crop.CropListingRepository;
 import com.agroflow.backend.exception.CropAlreadyBookedException;
 import com.agroflow.backend.exception.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class BookingService {
@@ -48,6 +50,12 @@ public class BookingService {
         }
         booking.cancel();
         bookingRepository.save(booking);
-        cropListingRepository.markAsAvailable(booking.getCropListing().getId());
+        int updatedRows = cropListingRepository.markAsAvailable(booking.getCropListing().getId());
+        if(updatedRows == 0){
+            log.warn("Crop listing ID {} was already marked as available or not found during cancellation of booking ID {}",booking.getCropListing().getId(),bookingId);
+
+        }else{
+            log.info("Successfully canceled booking ID {} and realesed crop listing ID {}",bookingId,booking.getCropListing().getId());
+        }
     }
 }
