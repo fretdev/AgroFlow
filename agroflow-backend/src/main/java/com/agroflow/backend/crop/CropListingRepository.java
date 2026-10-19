@@ -31,4 +31,8 @@ public interface CropListingRepository extends JpaRepository<CropListing,Long>, 
     @Modifying
     @Query("UPDATE CropListing c SET c.isSold = true WHERE c.id = :id AND c.isSold = false")
     int markAsSoldIfAvailable(@Param("id") Long id);
+
+    @Modifying
+    @Query("UPDATE CropListing c SET c.isSold = false WHERE c.id = :id AND c.isSold = true")
+    int markAsAvailable(@Param("id") Long id);
 }

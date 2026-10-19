@@ -1,5 +1,6 @@
 package com.agroflow.backend.booking;
 
+import com.agroflow.backend.crop.CropListingRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.javacrumbs.shedlock.spring.annotation.SchedulerLock;
@@ -18,6 +19,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BookingExpirationService {
     private final BookingRepository bookingRepository;
+    private final CropListingRepository cropListingRepository;
 
     private static final int BATCH_SIZE  = 500;
 
@@ -60,7 +62,8 @@ public class BookingExpirationService {
             try {
                 booking.expire();
                 bookingRepository.save(booking);
-                log.info("Successfully transitioned booking ID {} to EXPIRED status.",booking.getId());
+                cropListingRepository.markAsAvailable(booking.getCropListing().getId());
+                log.info("Successfully transitioned booking ID {} to EXPIRED status and released crop {}.",booking.getId(),booking.getCropListing().getId());
             }catch (Exception e){
                 log.error("Failed to transition booking ID {} to EXPIRED status: {}",booking.getId(),e.getMessage(),e);
             }

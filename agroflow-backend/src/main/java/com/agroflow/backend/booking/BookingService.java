@@ -40,4 +40,14 @@ public class BookingService {
             return BookingResponse.from(savedBooking);
 
     }
+    @Transactional
+    public void cancelBooking(Long bookingId,Long buyerId){
+        Booking booking = bookingRepository.findById(bookingId).orElseThrow(()->new ResourceNotFoundException("Booking not found"));
+        if(!booking.getBuyerId().equals(buyerId)){
+            throw  new IllegalStateException("Unauthorized to cancel this booking");
+        }
+        booking.cancel();
+        bookingRepository.save(booking);
+        cropListingRepository.markAsAvailable(booking.getCropListing().getId());
+    }
 }
