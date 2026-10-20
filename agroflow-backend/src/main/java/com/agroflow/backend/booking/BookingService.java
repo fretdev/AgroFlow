@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -58,4 +59,19 @@ public class BookingService {
             log.info("Successfully canceled booking ID {} and realesed crop listing ID {}",bookingId,booking.getCropListing().getId());
         }
     }
+    public List<BookingResponse> getBookingsByBuyer(Long buyerId){
+        return bookingRepository.findByBuyerId(buyerId).stream().map(BookingResponse::from).toList();
+    }
+
+    @Transactional
+    public void confirmBooking(Long bookingId, Long farmerId) {
+        Booking booking = bookingRepository.findById(bookingId).orElseThrow(()-> new ResourceNotFoundException("Booking not found"));
+        if(!booking.getCropListing().getFarmer().getId().equals(farmerId)){
+            throw new IllegalStateException("Unauthorized to confirm this booking");
+        }
+        booking.confirm();
+        bookingRepository.save(booking);
+        log.info("Successfully confirmed booking ID {} for crop listing ID {}",bookingId,booking.getCropListing().getId());
+    }
 }
+
