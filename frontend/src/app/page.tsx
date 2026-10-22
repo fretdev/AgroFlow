@@ -6,8 +6,10 @@ import Navbar from "@/src/components/Navbar";
 gsap.registerPlugin(ScrollTrigger,SplitText)
 export default function LandingPage() {
   return (
-     <main>
-        <Navbar />
-     </main>
+      <>
+        <header>
+          <Navbar />
+        </header>
+     </>
   );
 }
