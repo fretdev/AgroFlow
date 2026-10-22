@@ -46,7 +46,9 @@ export default function Navbar() {
                                 className="group relative inline-flex items-center justify-center gap-2 px-4 py-2 text-sm lg:text-base font-medium text-white bg-agro-dark rounded-full shadow-sm hover:bg-agro-green transition-all duration-200 ease-in-out hover:shadow-md active:scale-95 whitespace-nowrap"
                             >
                                 <span>Get Started</span>
-                                <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" />
+                                <div className="arrow-container rounded-full bg-white w-5 h-5 flex-center text-agro-dark">
+                                    <ArrowRight className="w-3 h-3 transition-transform duration-200 group-hover:translate-x-1"/>
+                                </div>
                             </Link>
                         </div>
 

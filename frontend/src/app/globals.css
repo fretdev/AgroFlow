@@ -56,7 +56,7 @@ body {
                     @apply  flex md:hidden items-center gap-2 justify-start;
                 }
                 .desktop-links{
-                    @apply  hidden md:flex items-center gap-4 lg:gap-6 justify-start;
+                    @apply  hidden md:flex items-center gap-4 lg:gap-6 md:gap-2 justify-start;
                 }
                 .desktop-logo{
                     @apply  hidden md:flex items-center gap-2 justify-center;
