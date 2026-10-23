@@ -2,6 +2,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SplitText } from "gsap/SplitText";
 import Navbar from "@/src/components/Navbar";
+import Hero from "../components/landingPage/Hero";
 
 gsap.registerPlugin(ScrollTrigger,SplitText)
 export default function LandingPage() {
@@ -10,6 +11,9 @@ export default function LandingPage() {
         <header>
           <Navbar />
         </header>
+        <main>
+          <Hero />
+        </main>
      </>
   );
 }
