@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <input type="text">
+    <h1></h1>
+    <button>Clear Storage</button>
+    <script>
+        const input = document.querySelector("input")
+        const h1 = document.querySelector("h1")
+        const button = document.querySelector("button")
+
+        h1.innerHTML = localStorage.getItem("value")
+
+        input.addEventListener("keyup",()=>{
+            localStorage.setItem("value",input.value)
+            localStorage.setItem("value2",input.value)
+            localStorage.setItem("value3",input.value)
+            h1.innerHTML = localStorage.getItem("value")
+        })
+        button.addEventListener("click",()=>localStorage.clear())
+
+    </script>
+</body>
+</html>

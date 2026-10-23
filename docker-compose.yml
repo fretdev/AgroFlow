@@ -1,0 +1,16 @@
+services:
+  postgres_local:
+    image: postgres:17
+    container_name: agroflow_postgres_local
+    ports:
+      - "${AGROFLOW_DB_PORT}:5432"
+    environment:
+      POSTGRES_DB: ${AGROFLOW_DB_NAME}
+      POSTGRES_USER: ${AGROFLOW_DB_USER}
+      POSTGRES_PASSWORD: ${AGROFLOW_DB_PASSWORD}
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
