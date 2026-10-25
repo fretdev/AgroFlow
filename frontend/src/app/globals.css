@@ -41,6 +41,10 @@ body::after {
     @apply absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2;
 }
 
+@utility flex-center {
+    @apply flex justify-center items-center;
+}
+
 @utility text-gradient {
     background: linear-gradient(to bottom, #059669, #064e3b);
     -webkit-background-clip: text;

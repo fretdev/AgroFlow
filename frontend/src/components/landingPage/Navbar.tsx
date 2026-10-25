@@ -93,7 +93,7 @@ export default function Navbar() {
                             className="group inline-flex items-center justify-center gap-2 text-center py-2.5 bg-agro-dark text-white font-medium rounded-full shadow-sm hover:bg-agro-green transition-colors"
                         >
                             <span>Get Started</span>
-                            <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" />
+                               <ArrowRight className="w-3 h-3 transition-transform duration-200 group-hover:translate-x-1"/>
                         </Link>
                     </div>
                 </div>
