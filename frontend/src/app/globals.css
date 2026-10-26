@@ -9,6 +9,7 @@
     --color-agro-dark: #326729;
     --color-harvest-gold: #d97706;
     --color-surface-light: #f8fafc;
+    --font-sans: var(--font-jakarta), sans-serif;
 }
 
 html,
@@ -18,6 +19,7 @@ body {
     scroll-behavior: smooth;
     overflow-x: hidden;
     background-color: var(--color-surface-light);
+    font-family: var(--font-sans);
 }
 body::after {
     content: "";
@@ -46,10 +48,11 @@ body::after {
 }
 
 @utility text-gradient {
-    background: linear-gradient(to bottom, #059669, #064e3b);
+    display: inline-block;
+    background: linear-gradient(to bottom, #52a344 0%, #326729 100%);
     -webkit-background-clip: text;
     background-clip: text;
-    color: transparent;
+    -webkit-text-fill-color: transparent;
 }
 
 @layer components {
