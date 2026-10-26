@@ -60,7 +60,7 @@ body::after {
         @apply w-full overflow-x-hidden;
     }
     .navbar {
-        @apply fixed top-0 left-0 w-full z-50 bg-surface-light/90 backdrop-blur-md shadow-sm;
+        @apply fixed top-0 left-0 w-full z-50 bg-transparent;
 
         .nav-wrapper {
             @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
@@ -84,7 +84,7 @@ body::after {
         }
 
         .nav-dropdown {
-            @apply md:hidden absolute top-full left-0 w-full bg-surface-light/95 backdrop-blur-md border-b border-slate-200 shadow-lg px-6 py-6 flex flex-col gap-6 animate-in fade-in slide-in-from-top-2;
+            @apply md:hidden absolute top-full left-0 w-full bg-[#102b1e]/95 backdrop-blur-md border-b border-white/15 shadow-lg px-6 py-6 flex flex-col gap-6 animate-in fade-in slide-in-from-top-2;
         }
     }
 }

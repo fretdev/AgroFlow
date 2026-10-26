@@ -14,14 +14,16 @@ export default function Navbar() {
             <div className="nav-wrapper">
                 <div className="nav-container">
                     <Link href="/frontend/public" className="mobile-logo">
-                        <Image src="/images/Logo1.png" alt="Agroflow Logo" width={32} height={32} priority className="w-8 h-8 object-contain" />
-                        <span className="font-bold text-base sm:text-lg text-agro-dark truncate">Agroflow</span>
+                        <span className="flex h-7 w-8 shrink-0 items-center justify-center rounded-full bg-[#f4f7e9]/80">
+                            <Image src="/images/Logo1.png" alt="Agroflow Logo" width={28} height={28} priority className="h-7 w-7 object-contain" />
+                        </span>
+                        <span className="font-bold text-base sm:text-lg text-white truncate">Agroflow</span>
                     </Link>
 
                     <ul className="desktop-links">
                         {navLinks.map((link) => (
                             <li key={link.id}>
-                                <Link href={link.href} className="text-slate-600 hover:text-agro-green transition-colors font-medium text-sm lg:text-base whitespace-nowrap">
+                                <Link href={link.href} className="text-white/85 hover:text-[#d9f99d] transition-colors font-medium text-sm lg:text-base whitespace-nowrap">
                                     {link.title}
                                 </Link>
                             </li>
@@ -29,24 +31,26 @@ export default function Navbar() {
                     </ul>
 
                     <Link href="/frontend/public" className="desktop-logo">
-                        <Image src="/images/Logo1.png" alt="Agroflow Logo" width={38} height={38} priority className="w-9 h-9 object-contain" />
-                        <span className="font-bold text-lg text-agro-dark whitespace-nowrap">Agroflow</span>
+                        <span className="flex h-7 w-8 shrink-0 items-center justify-center rounded-full bg-[#f4f7e9]/80">
+                            <Image src="/images/Logo1.png" alt="Agroflow Logo" width={32} height={32} priority className="h-8 w-8 object-contain" />
+                        </span>
+                        <span className="font-bold text-lg text-white whitespace-nowrap">Agroflow</span>
                     </Link>
 
                     <div className="nav-actions">
                         <div className="desktop-auth-buttons hidden md:flex items-center gap-3">
                             <Link
                                 href="/sign-in"
-                                className="text-agro-dark font-medium text-sm lg:text-base px-2.5 py-2 hover:text-agro-green transition-colors whitespace-nowrap"
+                                className="text-white/90 font-medium text-sm lg:text-base px-2.5 py-2 hover:text-[#d9f99d] transition-colors whitespace-nowrap"
                             >
                                 Login
                             </Link>
                             <Link
                                 href="/sign-up"
-                                className="group relative inline-flex items-center justify-center gap-2 px-4 py-2 text-sm lg:text-base font-medium text-white bg-agro-dark rounded-full shadow-sm hover:bg-agro-green transition-all duration-200 ease-in-out hover:shadow-md active:scale-95 whitespace-nowrap"
+                                className="group relative inline-flex items-center justify-center gap-2 px-4 py-2 text-sm lg:text-base font-semibold text-[#102b1e] bg-[#d9f99d] rounded-full shadow-sm hover:bg-white transition-all duration-200 ease-in-out hover:shadow-md active:scale-95 whitespace-nowrap"
                             >
                                 <span>Get Started</span>
-                                <div className="arrow-container rounded-full bg-white w-5 h-5 flex-center text-agro-dark">
+                                <div className="arrow-container rounded-full bg-[#102b1e] w-5 h-5 flex-center text-[#d9f99d]">
                                     <ArrowRight className="w-3 h-3 transition-transform duration-200 group-hover:translate-x-1"/>
                                 </div>
                             </Link>
@@ -54,7 +58,7 @@ export default function Navbar() {
 
                         <button
                             onClick={() => setIsOpen(!isOpen)}
-                            className="hamburger-btn md:hidden text-slate-700 focus:outline-none p-1.5 sm:p-2 rounded-lg hover:bg-slate-100 transition-colors"
+                            className="hamburger-btn md:hidden text-white focus:outline-none p-1.5 sm:p-2 rounded-lg hover:bg-white/10 transition-colors"
                             aria-label="Toggle Menu"
                         >
                             {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -71,26 +75,26 @@ export default function Navbar() {
                                 <Link
                                     href={link.href}
                                     onClick={() => setIsOpen(false)}
-                                    className="text-slate-700 font-medium text-lg block hover:text-agro-green transition-colors"
+                                    className="text-white font-medium text-lg block hover:text-[#d9f99d] transition-colors"
                                 >
                                     {link.title}
                                 </Link>
                             </li>
                         ))}
                     </ul>
-                    <hr className="border-slate-200" />
+                    <hr className="border-white/15" />
                     <div className="dropdown-btns flex flex-col gap-3">
                         <Link
                             href="/sign-in"
                             onClick={() => setIsOpen(false)}
-                            className="text-center py-2.5 text-agro-dark font-medium border border-agro-dark/20 rounded-lg hover:bg-slate-50 transition-colors"
+                            className="text-center py-2.5 text-white font-medium border border-white/25 rounded-lg hover:bg-white/10 transition-colors"
                         >
                             Login
                         </Link>
                         <Link
                             href="/sign-up"
                             onClick={() => setIsOpen(false)}
-                            className="group inline-flex items-center justify-center gap-2 text-center py-2.5 bg-agro-dark text-white font-medium rounded-full shadow-sm hover:bg-agro-green transition-colors"
+                            className="group inline-flex items-center justify-center gap-2 text-center py-2.5 bg-[#d9f99d] text-[#102b1e] font-semibold rounded-full shadow-sm hover:bg-white transition-colors"
                         >
                             <span>Get Started</span>
                                <ArrowRight className="w-3 h-3 transition-transform duration-200 group-hover:translate-x-1"/>
