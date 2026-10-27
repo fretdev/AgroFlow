@@ -13,7 +13,7 @@ export default function Navbar() {
         <nav className="navbar">
             <div className="nav-wrapper">
                 <div className="nav-container">
-                    <Link href="/frontend/public" className="mobile-logo">
+                    <Link href="/" className="mobile-logo">
                         <span className="flex h-7 w-8 shrink-0 items-center justify-center rounded-full bg-[#f4f7e9]/80">
                             <Image src="/images/Logo1.png" alt="Agroflow Logo" width={28} height={28} priority className="h-7 w-7 object-contain" />
                         </span>
@@ -30,7 +30,7 @@ export default function Navbar() {
                         ))}
                     </ul>
 
-                    <Link href="/frontend/public" className="desktop-logo">
+                    <Link href="/" className="desktop-logo">
                         <span className="flex h-7 w-8 shrink-0 items-center justify-center rounded-full bg-[#f4f7e9]/80">
                             <Image src="/images/Logo1.png" alt="Agroflow Logo" width={32} height={32} priority className="h-8 w-8 object-contain" />
                         </span>
