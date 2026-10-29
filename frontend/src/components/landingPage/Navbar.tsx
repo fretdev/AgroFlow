@@ -32,7 +32,7 @@ export default function Navbar() {
 
                     <Link href="/" className="desktop-logo">
                         <span className="flex h-7 w-8 shrink-0 items-center justify-center rounded-full bg-[#f4f7e9]/80">
-                            <Image src="/images/Logo1.png" alt="Agroflow Logo" width={32} height={32} priority className="h-8 w-8 object-contain" />
+                            <Image src="/images/Logo1.jpg" alt="Agroflow Logo" width={32} height={32} priority className="h-8 w-8 object-contain" />
                         </span>
                         <span className="font-bold text-lg text-white whitespace-nowrap">Agroflow</span>
                     </Link>

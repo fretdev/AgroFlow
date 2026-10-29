@@ -1,20 +1,31 @@
 "use server"
 import { cookies } from "next/headers"
+import { loginSchema, signUpSchema } from "../lib/validators/zodAuthValidator";
+import { success } from "zod";
+
 
 const BACKEND_URL = process.env.BACKEND_URL || 'http://localhost:8080/api/v1/auth';
 
 export  async function register(prevState: unknown ,formData: FormData){
-    const fullName = formData.get('fullName') as string;
-    const email = formData.get('email') as string;
-    const password = formData.get('password') as string;
-    const phoneNumber = formData.get('phoneNumber') as string;
-    const systemRole = formData.get('systemRole') as string;
-
+    const rawData = {
+        fullName:formData.get('fullName'),
+        email:formData.get('email'),
+        password:formData.get('password'),
+        phoneNumber:formData.get('phoneNumber'),
+        systemRole:formData.get('systemRole')
+    }
+    const validatedData = signUpSchema.safeParse(rawData);
+    if(!validatedData.success){
+        return{
+            success:false,
+            error:validatedData.error.issues[0].message
+        }
+    }
     try{
         const response = await fetch(`${BACKEND_URL}/register`,{
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({fullName,email,password,phoneNumber,systemRole})
+            body: JSON.stringify(validatedData.data)
         });
         if(!response.ok){
             const errorText = await response.text();
@@ -47,14 +58,22 @@ export  async function register(prevState: unknown ,formData: FormData){
 }
 
 export async function login(prevState:unknown,formData:FormData){
-    const email = formData.get('email') as string;
-    const password = formData.get('password') as string;
-
+    const rawData = {
+        email:formData.get('email'),
+        password:formData.get('password')
+    }
+    const validatedData = loginSchema.safeParse(rawData);
+    if(!validatedData.success){
+        return{
+            success:false,
+            error:validatedData.error.issues[0].message
+        }
+    }
     try{
         const response = await fetch(`${BACKEND_URL}/authenticate`,{
             method: 'POST',
             headers:{'Content-Type':'application/json'},
-            body: JSON.stringify({email,password})
+            body: JSON.stringify(validatedData.data)
         });
         if(!response.ok){
             const errorText = await response.text();
