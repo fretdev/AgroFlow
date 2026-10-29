@@ -1,7 +1,7 @@
 'use client';
 
 import { useActionState, useEffect } from 'react';
-import { register } from '@/src/actions/auth';
+import { register } from '@/src/actions/auth-actions';
 import { useRouter } from 'next/navigation';
 
 const initialState = {

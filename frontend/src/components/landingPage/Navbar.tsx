@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { navLinks } from "@/src/constants";
+import { navLinks } from "@/src/constants/navbarLinks";
 import Image from "next/image";
 import { Menu, X, ArrowRight } from "lucide-react";
 
