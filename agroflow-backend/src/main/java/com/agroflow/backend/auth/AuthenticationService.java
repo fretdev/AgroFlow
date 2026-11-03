@@ -14,6 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Map;
 import java.util.UUID;
 
 @Service
@@ -36,7 +37,10 @@ public class AuthenticationService {
                 .isActive(true)
                 .build();
        User savedUser =  repository.save(user);
-        var jwtToken = jwtService.generateToken(savedUser);
+        var jwtToken = jwtService.generateToken(
+                Map.of("role",savedUser.getSystemRole()),
+                savedUser
+        );
         return AuthenticationResponse.builder()
                 .token(jwtToken)
                 .build();
@@ -46,7 +50,10 @@ public class AuthenticationService {
                 request.getPassword()));
         var user = repository.findByEmail(request.getEmail())
                 .orElseThrow(()-> new UsernameNotFoundException("User not found"));
-        var jwtToken = jwtService.generateToken(user);
+        var jwtToken = jwtService.generateToken(
+                Map.of("role",user.getSystemRole()),
+                user
+        );
         return AuthenticationResponse.builder()
                 .token(jwtToken)
                 .build();
