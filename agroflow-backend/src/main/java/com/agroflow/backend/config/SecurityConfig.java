@@ -1,7 +1,7 @@
 package com.agroflow.backend.config;
 
 import com.agroflow.backend.security.CustomAccessDeniedHandler;
-import com.agroflow.backend.security.JwtAuthenticationFilter;
+import com.agroflow.backend.security.jwt.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

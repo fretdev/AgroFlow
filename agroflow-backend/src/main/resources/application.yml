@@ -37,4 +37,6 @@ application:
   security:
     jwt:
       secret-key: ${JWT-SECRET-KEY}
-      expiration: 86400000
+      jwt_expiration: ${JWT_EXPIRATION:15m}
+      issuer: agroflow-backend
+      clock-skew-seconds: 30
