@@ -104,26 +104,21 @@ function formatBackendErrors(status:number,rawText:string,fallback:string){
     if(status === 401 || status === 403){
         return "Invalid email or password. Please check your credentials and try again.";
     }
-    if(status === 409){
-        return "An account with this email already exists.";
-    }
     if(status >= 500){
         return "Our servers are temporarily unavailable. Please try again in a moment";
     }
     if(rawText){
         try{
             const parsed = JSON.parse(rawText);
+            
+            if (typeof parsed.errors === "object" && parsed.errors) {
+                const firstFieldError = Object.values(parsed.errors).find((v) => typeof v === "string");
+                if (typeof firstFieldError === "string") {
+                 return firstFieldError;
+                }   
+            }
             if(typeof parsed.message === "string" && parsed.message.trim()){
                 return parsed.message;
-            }
-            if(typeof parsed.detail === "string" && parsed.detail.trim()){
-                return parsed.detail;
-            }
-            if (typeof parsed === "object" && parsed !== null) {
-                const firstValue = Object.values(parsed).find((v) => typeof v === "string");
-                if (typeof firstValue === "string") {
-                 return firstValue;
-                }   
             }
         } catch {
             if (rawText.length < 120 && !rawText.includes("{")) {

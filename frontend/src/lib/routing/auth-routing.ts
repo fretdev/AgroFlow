@@ -25,17 +25,25 @@ export  async function handleAuthRouting(request:NextRequest){
   const requestCookie = request.cookies.get('agroflow-token');
   const token = requestCookie?.value;
   const currentPath = request.nextUrl.pathname;
+  const isAuthPage = currentPath === '/sign-in' || currentPath === '/sign-up';
 
   if(!token){
+    if(isAuthPage) return NextResponse.next();
     return NextResponse.redirect(new URL('/sign-in',request.url));
   }
   try{
     const { payload } = await jwtVerify(token,getJwtSecretKey());
     const rolesArray = Array.isArray(payload.roles) ? payload.roles.map(r =>String(r).toUpperCase()) : [];
     const role = rolesArray[0] || '';
-    console.log(role);
 
     const userWorkspace = getUserWorkspace(role);
+
+    if(isAuthPage){
+      if(userWorkspace != '/sign-in'){
+        return NextResponse.redirect(new URL(userWorkspace,request.url));
+      }
+      return NextResponse.next();
+    }
 
     if(currentPath == "/dashboard" || currentPath == '/dashboard/'){
       return NextResponse.redirect(new URL(userWorkspace,request.url));
@@ -59,7 +67,7 @@ export  async function handleAuthRouting(request:NextRequest){
     return NextResponse.next();
   }catch(err){
     console.log("JWT Verification failed at proxy boundary:",err)
-    const response = NextResponse.redirect(new URL('/sign-in',request.url));
+    const response = isAuthPage ? NextResponse.next() : NextResponse.redirect(new URL('/sign-in',request.url));
     response.cookies.delete('agroflow-token');
     return response;
   }
