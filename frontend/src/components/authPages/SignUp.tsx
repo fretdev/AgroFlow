@@ -1,122 +1,172 @@
-'use client';
+"use client";
 
-import { useActionState, useEffect } from 'react';
-import { register } from '@/src/actions/auth-actions';
-import { useRouter } from 'next/navigation';
+import Image from "next/image";
+import Link from "next/link";
+import { useActionState, useEffect } from "react";
+import { register } from "@/src/actions/auth-actions";
+import { useRouter } from "next/navigation";
 
 const initialState = {
   success: false,
   error: null as string | null,
-};
+}
 
-export default function SignUpForm() {
-  const [state, formAction, isPending] = useActionState(register, initialState);
-  const router = useRouter();
+export default function SignUpForm(){
+   const [state, formAction, isPending] = useActionState(register, initialState)
+   const router = useRouter();
 
-  useEffect(() => {
-    if (state.success) {
+   useEffect(()=>{
+    if(state.success){
       router.push('/dashboard');
     }
-  }, [state.success, router]);
+   },[state.success, router]);
 
-  return (
-    <main className="flex min-h-screen items-center justify-center bg-gray-50 px-4 py-12">
-      <div className="w-full max-w-md space-y-8 rounded-xl bg-white p-8 shadow-md">
-        <div className="text-center">
-          <h1 className="text-2xl font-bold tracking-tight text-gray-900">Create your AgroFlow account</h1>
-          <p className="mt-2 text-sm text-gray-600">Join the agricultural supply chain network</p>
+  return(
+    <main className="flex min-h-screen w-full">
+      <aside className="hidden lg:w-1/2 relative overflow-hidden lg:flex flex-col justify-between p-12">
+          <Image 
+           src="/images/Transport1.jpg"
+           alt="agroflow signup image"
+           fill
+           priority
+           className="object-cover"/>
+           <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/70 to-transparent z-10" />
+
+           <div className="relative z-20 flex flex-col items-center space-y-8">
+              <Image
+               src = "/images/Logo1.jpg"
+               alt="Agroflow logo"
+               width={200}
+               height={40}
+               className="object-cover" 
+              />
+
+              <div className="max-w-md text-center">
+                <p className="text-3xl font-medium text-white leading-relaxed">Eliminating post-harvest crop spoilage by seamlessly connecting farmers, transporters, and buyers.</p>
+              </div>
+           </div>
+
+           <div className="relative z-20 text-center">
+              <footer className="text-sm text-zinc-300 text-center space-x-2">
+                  <span>&copy; {new Date().getFullYear()} Agroflow Enterprise Logistics </span>
+                  <span>•</span>
+                  <span>All rights reserved.</span>
+              </footer>
+           </div>
+      </aside>
+
+      <section className="w-full lg:w-1/2 flex flex-col justify-between p-6 sm:p-8 lg:p-12 bg-white overflow-y-auto min-h-screen">
+        <div className="flex justify-between items-center w-full">
+          <span className="text-sm font-semibold tracking-tight text-zinc-900 lg:hidden">Agroflow</span>
+          <Link href="/" className="text-sm font-medium text-zinc-600 hover:text-zinc-900 transition-colors ml-auto">&larr; Back to home</Link>
         </div>
 
-        <form action={formAction} className="mt-8 space-y-6">
-          {state.error && (
-            <div className="rounded-md bg-red-50 p-4 text-sm text-red-700">
-              {state.error}
-            </div>
-          )}
+        <div className="max-w-md w-full mx-auto space-y-6 py-4">
+          <div className="space-y-1.5">
+            <h1 className="text-3xl font-bold tracking-tight text-zinc-900">Create an account</h1>
+            <p className="text-sm text-zinc-600">Enter your details below to set up your Agroflow account.</p>
+         </div>
 
-          <div className="space-y-4">
+         {state?.error && (
+          <div className="p-3 text-sm text-red-600 bg-red-50 border border-red-200 rounded-md">{state.error}</div>
+         )}
+
+         <form action={formAction} className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700" htmlFor="fullName">
+              <label htmlFor="fullName" className="block text-sm font-medium text-zinc-700">
                 Full Name
               </label>
-              <input
+              <input 
+                type="text"
                 id="fullName"
                 name="fullName"
-                type="text"
                 required
-                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-green-500 focus:outline-none focus:ring-green-500 sm:text-sm"
+                placeholder="Seyi Cole"
+                className="mt-1 block w-full rounded-md border border-zinc-300 px-3 py-2 text-zinc-900 shadow-sm focus:border-emerald-600 focus:outline-none focus:ring-1 focus:ring-emerald-600 sm:text-sm" 
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700" htmlFor="email">
+              <label htmlFor="email" className="block text-sm font-medium text-zinc-700">
                 Email Address
               </label>
-              <input
+              <input 
+                type="email"
                 id="email"
                 name="email"
-                type="email"
                 required
-                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-green-500 focus:outline-none focus:ring-green-500 sm:text-sm"
+                placeholder="seyi@gmail.com"
+                className="mt-1 block w-full rounded-md border border-zinc-300 px-3 py-2 text-zinc-900 shadow-sm focus:border-emerald-600 focus:outline-none focus:ring-1 focus:ring-emerald-600 sm:text-sm"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700" htmlFor="password">
-                Password
-              </label>
-              <input
-                id="password"
-                name="password"
-                type="password"
-                required
-                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-green-500 focus:outline-none focus:ring-green-500 sm:text-sm"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700" htmlFor="phoneNumber">
+              <label htmlFor="phoneNumber" className="block text-sm font-medium text-zinc-700">
                 Phone Number
               </label>
-              <input
+              <input 
+                type="tel"
                 id="phoneNumber"
                 name="phoneNumber"
-                type="tel"
                 required
-                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-green-500 focus:outline-none focus:ring-green-500 sm:text-sm"
+                placeholder="+234 800 000 0000"
+                className="mt-1 block w-full rounded-md border border-zinc-300 px-3 py-2 text-zinc-900 shadow-sm focus:border-emerald-600 focus:outline-none focus:ring-1 focus:ring-emerald-600 sm:text-sm"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700" htmlFor="systemRole">
-                System Role
+              <label htmlFor="role" className="block text-sm font-medium text-zinc-700">
+                I want to join as a
               </label>
-              <select
+              <select 
+                name="systemRole" 
                 id="systemRole"
-                name="systemRole"
                 required
-                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-green-500 focus:outline-none focus:ring-green-500 sm:text-sm"
-              >
-                <option value="FARMER">Farmer</option>
-                <option value="TRADER">Trader</option>
-                <option value="TRANSPORTER">Transporter</option>
-                <option value="MARKETER">Marketer</option>
-                <option value="ADMIN">Admin</option>
-              </select>
+                defaultValue=""
+                className="mt-1 block w-full rounded-md border border-zinc-300 bg-white px-3 py-2 text-zinc-900 shadow-sm focus:border-emerald-600 focus:outline-none focus:ring-1 focus:ring-emerald-600 sm:text-sm"
+                >
+                  <option value="" disabled>
+                    Select your platform role
+                  </option>
+                  <option value="FARMER">Farmer</option>
+                  <option value="TRANSPORTER">Transporter</option>
+                  <option value="TRADER">Trader</option>
+                  <option value="MARKETER">Marketer</option>
+                </select>
             </div>
-          </div>
 
-          <div>
+            <div>
+              <label htmlFor="password" className="block text-sm font-medium text-zinc-700">
+                Password
+              </label>
+              <input 
+                type="password"
+                id="password"
+                name="password"
+                required
+                placeholder="••••••••"
+                className="mt-1 block w-full rounded-md border border-zinc-300 bg-white px-3 py-2 text-zinc-900 shadow-sm focus:border-emerald-600 focus:outline-none focus:ring-1 focus:ring-emerald-600 sm:text-sm"
+              />
+            </div>
+
             <button
               type="submit"
               disabled={isPending}
-              className="w-full rounded-md bg-green-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-500 focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-offset-2 disabled:opacity-50"
+              className="w-full flex justify-center py-2.5 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-emerald-600 hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 transition-colors disabled:opacity-50 disabled:cursor-not-allowed pt-2"
             >
-              {isPending ? 'Creating account...' : 'Sign up'}
+              {isPending ? "Creating account..." : "Create Account"}
             </button>
-          </div>
-        </form>
-      </div>
+         </form>
+
+         <p className="text-center text-sm text-zinc-600">
+           Already have an account?{' '}
+           <Link href="/sign-in" className="font-medium text-emerald-600 hover:text-emerald-500">
+             Sign in
+           </Link>
+         </p>
+        </div>
+        <div/>
+      </section>
     </main>
-  );
+  )
 }

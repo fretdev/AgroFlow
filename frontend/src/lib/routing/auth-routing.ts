@@ -7,7 +7,7 @@ const getJwtSecretKey = ()=>{
   if(!secret){
     throw new Error("JWT SECRET KEY is not present in the environment variable");
   }
-  return new TextEncoder().encode(secret);
+  return new Uint8Array(Buffer.from(secret,"base64"));
 }
 
 const getUserWorkspace = (role:string):string=>{
@@ -17,7 +17,7 @@ const getUserWorkspace = (role:string):string=>{
     case 'TRANSPORTER': return '/dashboard/transporter';
     case 'MARKETER': return '/dashboard/marketer';
     case 'ADMIN': return '/dashboard/admin';
-    default: return '/auth/login';
+    default: return '/sign-in';
   }
 }
 
@@ -27,11 +27,13 @@ export  async function handleAuthRouting(request:NextRequest){
   const currentPath = request.nextUrl.pathname;
 
   if(!token){
-    return NextResponse.redirect(new URL('/auth/login',request.url));
+    return NextResponse.redirect(new URL('/sign-in',request.url));
   }
   try{
     const { payload } = await jwtVerify(token,getJwtSecretKey());
-    const role = payload.role as string;
+    const rolesArray = Array.isArray(payload.roles) ? payload.roles.map(r =>String(r).toUpperCase()) : [];
+    const role = rolesArray[0] || '';
+    console.log(role);
 
     const userWorkspace = getUserWorkspace(role);
 
@@ -57,7 +59,7 @@ export  async function handleAuthRouting(request:NextRequest){
     return NextResponse.next();
   }catch(err){
     console.log("JWT Verification failed at proxy boundary:",err)
-    const response = NextResponse.redirect(new URL('/auth/login',request.url));
+    const response = NextResponse.redirect(new URL('/sign-in',request.url));
     response.cookies.delete('agroflow-token');
     return response;
   }
